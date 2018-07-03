@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'TPPageViewController_Example' do
+  pod 'TPPageViewController', :path => '../'
+
+  target 'TPPageViewController_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
