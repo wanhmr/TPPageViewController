@@ -1,13 +1,16 @@
 //
 //  TPViewController.h
-//  TPPageViewController
+//  TPPageViewController_Example
 //
-//  Created by tpx on 07/03/2018.
-//  Copyright (c) 2018 tpx. All rights reserved.
+//  Created by Tpphha on 2018/7/4.
+//  Copyright © 2018年 tpx. All rights reserved.
 //
 
-@import UIKit;
+#import <UIKit/UIKit.h>
 
 @interface TPViewController : UIViewController
+
+@property (strong, nonatomic) NSString *greeting;
+@property (strong, nonatomic) UIColor *color;
 
 @end

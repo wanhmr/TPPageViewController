@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'TPPageViewController'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of TPPageViewController.'
+  s.summary          = 'A UIPageViewController replacement.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -21,10 +21,10 @@ Pod::Spec.new do |s|
 TODO: Add long description of the pod here.
                        DESC
 
-  s.homepage         = 'https://github.com/tpx/TPPageViewController'
+  s.homepage         = 'https://github.com/wanhmr/TPPageViewController'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'tpx' => 'tpx@meitu.com' }
+  s.author           = { 'tpphha' => 'tpphha@gmail.com' }
   s.source           = { :git => 'https://github.com/tpx/TPPageViewController.git', :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
@@ -38,5 +38,5 @@ TODO: Add long description of the pod here.
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'KVOController'
 end
