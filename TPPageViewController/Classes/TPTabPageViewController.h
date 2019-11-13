@@ -22,7 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TPTabPageViewController : UIViewController
 
-@property (nonatomic, weak) id<TPTabPageViewControllerDataSource> dataSources;
+@property (nonatomic, weak) id<TPTabPageViewControllerDataSource> dataSource;
 @property (nonatomic, weak) id<TPTabPageViewControllerDelegate> delegate;
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nullable, nonatomic, readonly) __kindof UIViewController *selectedViewController;

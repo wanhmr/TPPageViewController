@@ -81,14 +81,14 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
 - (void)reloadData {
     [self.viewControllerCache removeAllObjects];
     
-    self.numberOfViewControllers = [self.dataSources numberOfViewControllersInPageViewController:self];
+    self.numberOfViewControllers = [self.dataSource numberOfViewControllersInPageViewController:self];
     
     if (self.tabBar.superview) {
         [self.tabBar removeFromSuperview];
     }
     self.tabBar = nil;
-    if ([self.dataSources respondsToSelector:@selector(tabBarInPageViewController:)]) {
-        self.tabBar = [self.dataSources tabBarInPageViewController:self];
+    if ([self.dataSource respondsToSelector:@selector(tabBarInPageViewController:)]) {
+        self.tabBar = [self.dataSource tabBarInPageViewController:self];
         [self.view addSubview:self.tabBar];
     }
     
@@ -106,7 +106,7 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
     NSNumber *key = TPKeyFromIndex(index);
     UIViewController *viewController = [self.viewControllerCache objectForKey:key];
     if (!viewController) {
-        viewController = [self.dataSources pageViewController:self viewControllerAtIndex:index];
+        viewController = [self.dataSource pageViewController:self viewControllerAtIndex:index];
         viewController.tp_pageIndex = key;
         [self.viewControllerCache setObject:viewController forKey:key];
     }

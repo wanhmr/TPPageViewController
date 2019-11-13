@@ -108,7 +108,7 @@
     
     PageViewController *viewController = [PageViewController new];
     viewController.delegate = self;
-    viewController.dataSources = self;
+    viewController.dataSource = self;
     return viewController;
 }
 
