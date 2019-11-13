@@ -43,6 +43,16 @@
     [super viewWillLayoutSubviews];
 }
 
+#pragma mark - WMMagicScrollViewDelegate
+
+- (BOOL)scrollView:(WMMagicScrollView *)scrollView shouldScrollWithSubview:(UIScrollView *)subview {
+    if ([self.delegate respondsToSelector:@selector(pageViewController:shouldScrollWithSubview:)]) {
+        return [self.delegate pageViewController:self shouldScrollWithSubview:subview];
+    }
+    
+    return YES;
+}
+
 #pragma mark - Accessors
 
 - (WMMagicScrollView *)scrollView {
