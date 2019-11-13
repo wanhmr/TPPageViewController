@@ -46,8 +46,6 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.scrollView.headerViewMinimumHeight = self.headerViewMinimumHeight;
-    self.scrollView.headerViewMaximumHeight = self.headerViewMaximumHeight;
 }
 
 - (void)viewWillLayoutSubviews {
@@ -64,6 +62,9 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
 
 - (void)reloadData {
     [super reloadData];
+    
+    self.scrollView.headerViewMinimumHeight = self.headerViewMinimumHeight;
+    self.scrollView.headerViewMaximumHeight = self.headerViewMaximumHeight;
     
     if (self.headerView.superview) {
         [self.headerView removeFromSuperview];
