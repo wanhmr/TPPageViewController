@@ -108,7 +108,11 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGFloat contentOffsetY = scrollView.contentOffset.y;
     CGFloat extraHeight = [self extraHeight];
-    CGFloat progress = contentOffsetY / extraHeight;
+    if (extraHeight < FLT_EPSILON) {
+        return;
+    }
+    
+    CGFloat progress = 1 - contentOffsetY / extraHeight;
     progress = MIN(1, MAX(0, progress));
     
     [self updateHeaderViewVisiableProgressIfNeeded:progress];
