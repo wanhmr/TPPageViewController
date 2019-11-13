@@ -33,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readonly) CGRect pageContentRect;
 
+- (UIViewController *)viewControllerAtIndex:(NSUInteger)index;
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex animated:(BOOL)animated;
 
