@@ -38,6 +38,7 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
 - (void)loadView {
     WMMagicScrollView *scrollView = [[WMMagicScrollView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     scrollView.backgroundColor = [UIColor whiteColor];
+    scrollView.bounces = NO;
     scrollView.delegate = self;
     self.view = scrollView;
 }
@@ -45,7 +46,6 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.scrollView.bounces = NO;
     self.scrollView.headerViewMinimumHeight = self.headerViewMinimumHeight;
     self.scrollView.headerViewMaximumHeight = self.headerViewMaximumHeight;
 }
