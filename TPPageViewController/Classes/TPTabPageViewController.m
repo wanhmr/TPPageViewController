@@ -67,6 +67,10 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
 }
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex animated:(BOOL)animated {
+    if (selectedIndex >= self.numberOfViewControllers) {
+        return;
+    }
+    
     TPPageViewControllerNavigationDirection direction = TPPageViewControllerNavigationDirectionForward;
     if (selectedIndex < self.selectedIndex) {
         direction = TPPageViewControllerNavigationDirectionReverse;
@@ -92,10 +96,7 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
         [self.view addSubview:self.tabBar];
     }
     
-    [self.pageViewController selectViewController:[self viewControllerAtIndex:self.selectedIndex]
-                                        direction:TPPageViewControllerNavigationDirectionForward
-                                         animated:NO
-                                       completion:nil];
+    [self setSelectedIndex:self.selectedIndex animated:NO];
 }
 
 #pragma mark - Utils
