@@ -13,6 +13,8 @@
 @property (nonatomic, readonly) CGFloat headerViewMinimumHeight;
 @property (nonatomic, readonly) CGFloat headerViewMaximumHeight;
 
+@property (nullable, nonatomic, strong) UIView *headerView;
+
 @property (nonatomic, readonly) WMMagicScrollView *scrollView;
 
 @end
@@ -41,6 +43,19 @@
                                              self.headerViewMaximumHeight);
     
     [super viewWillLayoutSubviews];
+}
+
+- (void)reloadData {
+    [super reloadData];
+    
+    if (self.headerView.superview) {
+        [self.headerView removeFromSuperview];
+    }
+    self.headerView = nil;
+    if ([self.dataSources respondsToSelector:@selector(headerViewInPageViewController:)]) {
+        self.headerView = [self.dataSources headerViewInPageViewController:self];
+        [self.view addSubview:self.headerView];
+    }
 }
 
 #pragma mark - WMMagicScrollViewDelegate

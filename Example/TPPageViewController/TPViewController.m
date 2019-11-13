@@ -21,7 +21,7 @@
 
 @end
 
-@interface TPViewController () <UITableViewDelegate, UITableViewDataSource, TPTabPageContentProtocol>
+@interface TPViewController () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -32,7 +32,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    [self.view addSubview:self.tableView];
+    UITableView *tableView = [[TableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    [self.view addSubview:tableView];
+    
+    self.tableView = tableView;
 }
 
 - (void)viewWillLayoutSubviews {
@@ -65,21 +71,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (UIScrollView *)preferredContentScrollView {
-    return self.tableView;
-}
-
-- (UITableView *)tableView {
-    if (!_tableView) {
-        UITableView *tableView = [[TableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-        tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-        tableView.delegate = self;
-        tableView.dataSource = self;
-        _tableView = tableView;
-    }
-    return _tableView;
 }
 
 /*

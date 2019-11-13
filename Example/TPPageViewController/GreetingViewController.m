@@ -22,7 +22,7 @@
 
 @end
 
-@interface GreetingViewController () <TPTabPageViewControllerDataSource, TPTabPageViewControllerDelegate>
+@interface GreetingViewController () <TPMagicTabPageViewControllerDataSource, TPMagicTabPageViewControllerDelegate>
 
 @property (strong, nonatomic, nonnull) NSArray<NSString *> *greetings;
 @property (strong, nonatomic, nonnull) NSArray<UIColor *> *greetingColors;
