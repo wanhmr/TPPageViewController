@@ -22,13 +22,19 @@
 
 #import "WMMagicScrollView.h"
 
+static NSString * const MXContentOffsetKeyPath = @"contentOffset";
+
 @interface MXScrollViewDelegateForwarder : NSObject <WMMagicScrollViewDelegate>
 @property (nonatomic,weak) id<WMMagicScrollViewDelegate> delegate;
 @end
 
 @interface WMMagicScrollView () <UIGestureRecognizerDelegate>
+
 @property (nonatomic, strong) MXScrollViewDelegateForwarder *forwarder;
 @property (nonatomic, strong) NSMutableArray<UIScrollView *> *observedViews;
+
+
+
 @end
 
 @implementation WMMagicScrollView {
@@ -73,8 +79,8 @@ static void * const kMXScrollViewKVOContext = (void*)&kMXScrollViewKVOContext;
     
     _observedViews = [NSMutableArray array];
     
-    [self addObserver:self forKeyPath:NSStringFromSelector(@selector(contentOffset))
-              options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld
+    [self addObserver:self forKeyPath:MXContentOffsetKeyPath
+              options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
               context:kMXScrollViewKVOContext];
     _isObserving = YES;
 }
@@ -146,15 +152,15 @@ static void * const kMXScrollViewKVOContext = (void*)&kMXScrollViewKVOContext;
     _lock = (scrollView.contentOffset.y > -scrollView.contentInset.top);
     
     [scrollView addObserver:self
-                 forKeyPath:NSStringFromSelector(@selector(contentOffset))
-                    options:NSKeyValueObservingOptionOld|NSKeyValueObservingOptionNew
+                 forKeyPath:MXContentOffsetKeyPath
+                    options:NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew
                     context:kMXScrollViewKVOContext];
 }
 
 - (void)removeObserverFromView:(UIScrollView *)scrollView {
     @try {
         [scrollView removeObserver:self
-                        forKeyPath:NSStringFromSelector(@selector(contentOffset))
+                        forKeyPath:MXContentOffsetKeyPath
                            context:kMXScrollViewKVOContext];
     }
     @catch (NSException *exception) {}
@@ -163,7 +169,7 @@ static void * const kMXScrollViewKVOContext = (void*)&kMXScrollViewKVOContext;
 //This is where the magic happens...
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
-    if (context == kMXScrollViewKVOContext && [keyPath isEqualToString:NSStringFromSelector(@selector(contentOffset))]) {
+    if (context == kMXScrollViewKVOContext && [keyPath isEqualToString:MXContentOffsetKeyPath]) {
         
         CGPoint new = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue];
         CGPoint old = [[change objectForKey:NSKeyValueChangeOldKey] CGPointValue];
@@ -174,21 +180,20 @@ static void * const kMXScrollViewKVOContext = (void*)&kMXScrollViewKVOContext;
         CGFloat maximumContentOffsetY = _headerViewMaximumHeight - _headerViewMinimumHeight;
         if (object == self) {
             //Adjust self scroll offset when scroll down
-            if (diff > FLT_EPSILON && _lock) {
+            if (diff > 0 && _lock) {
                 [self scrollView:self setContentOffset:old];
             } else if (self.contentOffset.y < -self.contentInset.top && !self.bounces) {
                 [self scrollView:self setContentOffset:CGPointMake(self.contentOffset.x, -self.contentInset.top)];
             } else if (self.contentOffset.y > maximumContentOffsetY) {
                 [self scrollView:self setContentOffset:CGPointMake(self.contentOffset.x, maximumContentOffsetY)];
             }
-            
         } else {
             //Adjust the observed scrollview's content offset
             UIScrollView *scrollView = object;
             _lock = (scrollView.contentOffset.y > -scrollView.contentInset.top);
             
             //Manage scroll up
-            if (self.contentOffset.y < maximumContentOffsetY && _lock && diff < FLT_EPSILON) {
+            if (self.contentOffset.y < maximumContentOffsetY && _lock && diff < 0) {
                 [self scrollView:scrollView setContentOffset:old];
             }
             //Disable bouncing when scroll down
@@ -224,7 +229,7 @@ static void * const kMXScrollViewKVOContext = (void*)&kMXScrollViewKVOContext;
 }
 
 - (void)dealloc {
-    [self removeObserver:self forKeyPath:NSStringFromSelector(@selector(contentOffset)) context:kMXScrollViewKVOContext];
+    [self removeObserver:self forKeyPath:MXContentOffsetKeyPath context:kMXScrollViewKVOContext];
     [self removeObservedViews];
 }
 

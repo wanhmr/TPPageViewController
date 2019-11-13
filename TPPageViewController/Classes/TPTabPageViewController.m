@@ -43,6 +43,10 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    if (@available(iOS 11, *)) {} else {
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
+    
     TPPageViewController *pageViewController = [[TPPageViewController alloc] initWithNavigationOrientation:TPPageViewControllerNavigationOrientationHorizontal];
     pageViewController.delegate = self;
     pageViewController.dataSource = self;
@@ -56,8 +60,8 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
     [self reloadData];
 }
 
-- (void)viewWillLayoutSubviews {
-    [super viewWillLayoutSubviews];
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
     self.tabBar.frame = self.tabBarRect;
     self.pageViewController.view.frame = self.pageContentRect;
 }

@@ -25,9 +25,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CGFloat)minimumHeightForHeaderViewInPageViewController:(TPMagicTabPageViewController *)pageViewController;
 
-- (CGFloat)maximumHeightForHeaderInPageViewController:(TPMagicTabPageViewController *)pageViewController;
+- (CGFloat)maximumHeightForHeaderViewInPageViewController:(TPMagicTabPageViewController *)pageViewController;
+
+- (void)pageViewController:(TPMagicTabPageViewController *)pageViewController didChangeHeaderViewVisiableProgress:(CGFloat)visiableProgress;
 
 - (BOOL)pageViewController:(TPMagicTabPageViewController *)pageViewController shouldScrollWithSubview:(UIScrollView *)subview;
+
+@end
+
+@protocol TPMagicTabPageContentProtocol <NSObject>
+
+- (UIScrollView *)preferredContentScrollView;
 
 @end
 
@@ -35,6 +43,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id<TPMagicTabPageViewControllerDataSource> dataSources;
 @property (nonatomic, weak) id<TPMagicTabPageViewControllerDelegate> delegate;
+
+@property (nonatomic, readonly) CGRect headerViewRect;
 
 @end
 

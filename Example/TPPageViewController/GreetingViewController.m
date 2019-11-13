@@ -133,11 +133,11 @@
 }
 
 - (CGFloat)minimumHeightForHeaderViewInPageViewController:(TPTabPageViewController *)pageViewController {
-    return 64;
+    return 0;
 }
 
-- (CGFloat)maximumHeightForHeaderInPageViewController:(TPTabPageViewController *)pageViewController {
-    return 120;
+- (CGFloat)maximumHeightForHeaderViewInPageViewController:(TPTabPageViewController *)pageViewController {
+    return 80;
 }
 
 @end

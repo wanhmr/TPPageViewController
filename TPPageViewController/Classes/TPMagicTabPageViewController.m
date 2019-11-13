@@ -8,6 +8,16 @@
 #import "TPMagicTabPageViewController.h"
 #import "WMMagicScrollView.h"
 
+static UIViewController * TPViewControllerFromView(UIView *view) {
+    for (UIView *v = view; v; v = v.superview) {
+        UIResponder *nextResponder = [v nextResponder];
+        if ([nextResponder isKindOfClass:[UIViewController class]]) {
+            return (UIViewController *)nextResponder;
+        }
+    }
+    return nil;
+}
+
 @interface TPMagicTabPageViewController () <WMMagicScrollViewDelegate>
 
 @property (nonatomic, readonly) CGFloat headerViewMinimumHeight;
@@ -17,6 +27,8 @@
 
 @property (nonatomic, readonly) WMMagicScrollView *scrollView;
 
+@property (nonatomic, assign) CGFloat headerViewVisiableProgress;
+
 @end
 
 @implementation TPMagicTabPageViewController
@@ -24,7 +36,7 @@
 @dynamic delegate;
 
 - (void)loadView {
-    WMMagicScrollView *scrollView = [WMMagicScrollView new];
+    WMMagicScrollView *scrollView = [[WMMagicScrollView alloc] initWithFrame:[UIScreen mainScreen].bounds];
     scrollView.backgroundColor = [UIColor whiteColor];
     scrollView.delegate = self;
     self.view = scrollView;
@@ -33,16 +45,21 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.scrollView.bounces = NO;
     self.scrollView.headerViewMinimumHeight = self.headerViewMinimumHeight;
     self.scrollView.headerViewMaximumHeight = self.headerViewMaximumHeight;
 }
 
 - (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
     self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.view.bounds),
                                              CGRectGetHeight(self.view.bounds) +
                                              self.headerViewMaximumHeight);
-    
-    [super viewWillLayoutSubviews];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    self.headerView.frame = self.headerViewRect;
 }
 
 - (void)reloadData {
@@ -58,6 +75,24 @@
     }
 }
 
+#pragma mark - Utils
+
+- (CGFloat)extraHeight {
+    return self.headerViewMaximumHeight - self.headerViewMinimumHeight;
+}
+
+- (void)updateHeaderViewVisiableProgressIfNeeded:(CGFloat)headerViewVisiableProgress {
+    if (ABS(self.headerViewVisiableProgress - headerViewVisiableProgress) < FLT_EPSILON) {
+        return;
+    }
+    
+    self.headerViewVisiableProgress = headerViewVisiableProgress;
+    
+    if ([self.delegate respondsToSelector:@selector(pageViewController:didChangeHeaderViewVisiableProgress:)]) {
+        [self.delegate pageViewController:self didChangeHeaderViewVisiableProgress:headerViewVisiableProgress];
+    }
+}
+
 #pragma mark - WMMagicScrollViewDelegate
 
 - (BOOL)scrollView:(WMMagicScrollView *)scrollView shouldScrollWithSubview:(UIScrollView *)subview {
@@ -65,7 +100,21 @@
         return [self.delegate pageViewController:self shouldScrollWithSubview:subview];
     }
     
-    return YES;
+    UIViewController *viewController = TPViewControllerFromView(subview);
+    if (![viewController conformsToProtocol:@protocol(TPMagicTabPageContentProtocol)]) {
+        return NO;
+    }
+    
+    return [(id<TPMagicTabPageContentProtocol>)viewController preferredContentScrollView] == subview;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGFloat contentOffsetY = scrollView.contentOffset.y;
+    CGFloat extraHeight = [self extraHeight];
+    CGFloat progress = contentOffsetY / extraHeight;
+    progress = MIN(1, MAX(0, progress));
+    
+    [self updateHeaderViewVisiableProgressIfNeeded:progress];
 }
 
 #pragma mark - Accessors
@@ -82,21 +131,29 @@
 }
 
 - (CGFloat)headerViewMaximumHeight {
-    if ([self.delegate respondsToSelector:@selector(maximumHeightForHeaderInPageViewController:)]) {
-        return [self.delegate maximumHeightForHeaderInPageViewController:self];
+    if ([self.delegate respondsToSelector:@selector(maximumHeightForHeaderViewInPageViewController:)]) {
+        return [self.delegate maximumHeightForHeaderViewInPageViewController:self];
     }
     return 0;
 }
 
+- (CGRect)headerViewRect {
+    return
+    CGRectMake(0,
+               0,
+               CGRectGetWidth(self.view.frame),
+               self.headerViewMaximumHeight);
+}
+
 - (CGRect)tabBarRect {
     CGRect tabBarRect = [super tabBarRect];
-    tabBarRect.origin.y += self.headerViewMaximumHeight;
+    tabBarRect.origin.y = CGRectGetMaxY(self.headerViewRect);
     return tabBarRect;
 }
 
 - (CGRect)pageContentRect {
     CGRect pageContentRect = [super pageContentRect];
-    pageContentRect.size.height += self.headerViewMaximumHeight - self.headerViewMinimumHeight;
+    pageContentRect.size.height += [self extraHeight];
     return pageContentRect;
 }
 

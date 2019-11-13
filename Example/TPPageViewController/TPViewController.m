@@ -7,7 +7,7 @@
 //
 
 #import "TPViewController.h"
-#import <TPPageViewController/TPTabPageViewController.h>
+#import "TPMagicTabPageViewController.h"
 
 @interface TableView : UITableView
 
@@ -21,7 +21,7 @@
 
 @end
 
-@interface TPViewController () <UITableViewDelegate, UITableViewDataSource>
+@interface TPViewController () <UITableViewDelegate, UITableViewDataSource, TPMagicTabPageContentProtocol>
 
 @property (nonatomic, strong) UITableView *tableView;
 
@@ -73,6 +73,11 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark - TPPageContentProtocol
+
+- (UIScrollView *)preferredContentScrollView {
+    return self.tableView;
+}
 /*
 #pragma mark - Navigation
 
