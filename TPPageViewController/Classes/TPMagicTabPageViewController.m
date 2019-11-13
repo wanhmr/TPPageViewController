@@ -96,10 +96,6 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
 #pragma mark - WMMagicScrollViewDelegate
 
 - (BOOL)scrollView:(WMMagicScrollView *)scrollView shouldScrollWithSubview:(UIScrollView *)subview {
-    if ([self.delegate respondsToSelector:@selector(pageViewController:shouldScrollWithSubview:)]) {
-        return [self.delegate pageViewController:self shouldScrollWithSubview:subview];
-    }
-    
     UIViewController *viewController = TPViewControllerFromView(subview);
     if (![viewController conformsToProtocol:@protocol(TPMagicTabPageContentProtocol)]) {
         return NO;

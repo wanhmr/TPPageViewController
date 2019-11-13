@@ -29,8 +29,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)pageViewController:(TPMagicTabPageViewController *)pageViewController didChangeHeaderViewVisiableProgress:(CGFloat)visiableProgress;
 
-- (BOOL)pageViewController:(TPMagicTabPageViewController *)pageViewController shouldScrollWithSubview:(UIScrollView *)subview;
-
 @end
 
 @protocol TPMagicTabPageContentProtocol <NSObject>
