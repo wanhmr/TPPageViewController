@@ -33,6 +33,8 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
 
 @property (nonatomic, weak, readonly) TPTabPageViewController *tabPageViewController;
 
+- (instancetype)initWithTabPageViewController:(TPTabPageViewController *)tabPageViewController;
+
 @end
 
 @interface TPTabPageViewController ()
@@ -55,7 +57,7 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     
-    self.viewModel = [TPTabPageViewModel new];
+    self.viewModel = [[TPTabPageViewModel alloc] initWithTabPageViewController:self];
     
     TPPageViewController *pageViewController = [[TPPageViewController alloc] initWithNavigationOrientation:TPPageViewControllerNavigationOrientationHorizontal];
     pageViewController.delegate = self.viewModel;
