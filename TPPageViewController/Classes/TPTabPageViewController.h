@@ -10,6 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class TPTabPageViewController;
 @protocol TPTabPageViewControllerDataSource;
 @protocol TPTabPageViewControllerDelegate;
 
@@ -23,9 +24,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id<TPTabPageViewControllerDataSource> dataSources;
 @property (nonatomic, weak) id<TPTabPageViewControllerDelegate> delegate;
-@property (nonatomic, strong, readonly) NSArray<UIViewController *> *cachedViewControllers;
 @property (nonatomic, assign) NSUInteger selectedIndex;
 @property (nullable, nonatomic, readonly) __kindof UIViewController *selectedViewController;
+
+@property (nonatomic, readonly) CGFloat tabBarHeight;
+
+@property (nonatomic, readonly) CGRect tabBarRect;
+
+@property (nonatomic, readonly) CGRect pageContentRect;
+
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex animated:(BOOL)animated;
 
@@ -41,9 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @optional
 
-- (__kindof UIView *)headerViewInPageViewController:(TPTabPageViewController *)pageViewController;
-
-- (__kindof UIView *)tabBarInPageViewController:(TPTabPageViewController *)pageViewController;
+- (nullable __kindof UIView *)tabBarInPageViewController:(TPTabPageViewController *)pageViewController;
 
 @end
 
@@ -51,11 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @optional
 
-- (CGFloat)pageViewController:(TPTabPageViewController *)pageViewController heightForTabBar:(__kindof UIView *)tabBar;
-
-- (CGFloat)pageViewController:(TPTabPageViewController *)pageViewController minimumHeightForHeaderView:(__kindof UIView *)headerView;
-
-- (CGFloat)pageViewController:(TPTabPageViewController *)pageViewController maximumHeightForHeaderView:(__kindof UIView *)headerView;
+- (CGFloat)heightForTabBarInPageViewController:(TPTabPageViewController *)pageViewController;
 
 - (void)pageViewController:(TPTabPageViewController *)pageViewController willStartScrollingFromViewController:(__kindof UIViewController *)startingViewController destinationViewController:(__kindof UIViewController *)destinationViewController;
 

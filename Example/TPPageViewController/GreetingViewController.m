@@ -8,8 +8,19 @@
 
 #import "GreetingViewController.h"
 #import "TPInfiniteViewController.h"
-#import "TPTabPageViewController.h"
+#import "TPMagicTabPageViewController.h"
 #import "TPViewController.h"
+
+@interface PageViewController : TPTabPageViewController
+
+@property (nonatomic, assign) BOOL flag;
+
+@end
+
+@implementation PageViewController
+
+
+@end
 
 @interface GreetingViewController () <TPTabPageViewControllerDataSource, TPTabPageViewControllerDelegate>
 
@@ -63,7 +74,7 @@
 }
 
 - (void)tapAction {
-    TPTabPageViewController *pageViewController = [TPTabPageViewController new];
+    TPMagicTabPageViewController *pageViewController = [TPMagicTabPageViewController new];
     pageViewController.dataSources = self;
     pageViewController.delegate = self;
     pageViewController.modalPresentationStyle = UIModalPresentationFullScreen;
@@ -88,17 +99,31 @@
 }
 
 - (UIViewController *)pageViewController:(TPTabPageViewController *)pageViewController viewControllerAtIndex:(NSUInteger)index {
-//    GreetingViewController *viewController = [self.storyboard instantiateViewControllerWithIdentifier:@"GreetingViewController"];
-//    viewController.greeting = self.greetings[index];
-//    viewController.color = self.greetingColors[index];
-    UIViewController *viewController = [TPViewController new];
+    if ([pageViewController isKindOfClass:PageViewController.class]) {
+        TPViewController *viewController = [TPViewController new];
+        viewController.greeting = self.greetings[index];
+        viewController.color = self.greetingColors[index];
+        return viewController;
+    }
+    
+    PageViewController *viewController = [PageViewController new];
+    viewController.delegate = self;
+    viewController.dataSources = self;
     return viewController;
 }
 
 - (UIView *)tabBarInPageViewController:(TPTabPageViewController *)pageViewController {
     UIView *tabBar = [UIView new];
-    tabBar.backgroundColor = [UIColor redColor];
+    if ([pageViewController isKindOfClass:PageViewController.class]) {
+        tabBar.backgroundColor = [UIColor redColor];
+    } else {
+        tabBar.backgroundColor = [UIColor blueColor];
+    }
     return tabBar;
+}
+
+- (CGFloat)heightForTabBarInPageViewController:(TPTabPageViewController *)pageViewController {
+    return 40;
 }
 
 - (UIView *)headerViewInPageViewController:(TPTabPageViewController *)pageViewController {
@@ -107,15 +132,11 @@
     return headerView;
 }
 
-- (CGFloat)pageViewController:(TPTabPageViewController *)pageViewController heightForTabBar:(__kindof UIView *)tabBar {
-    return 40;
-}
-
-- (CGFloat)pageViewController:(TPTabPageViewController *)pageViewController minimumHeightForHeaderView:(__kindof UIView *)headerView {
+- (CGFloat)minimumHeightForHeaderViewInPageViewController:(TPTabPageViewController *)pageViewController {
     return 64;
 }
 
-- (CGFloat)pageViewController:(TPTabPageViewController *)pageViewController maximumHeightForHeaderView:(__kindof UIView *)headerView {
+- (CGFloat)maximumHeightForHeaderInPageViewController:(TPTabPageViewController *)pageViewController {
     return 120;
 }
 

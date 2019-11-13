@@ -74,11 +74,11 @@
 - (UITableView *)tableView {
     if (!_tableView) {
         UITableView *tableView = [[TableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+        tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
         tableView.delegate = self;
         tableView.dataSource = self;
         _tableView = tableView;
     }
-    NSLog(@"tableView: %@", _tableView);
     return _tableView;
 }
 

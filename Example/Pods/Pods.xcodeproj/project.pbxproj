@@ -8,27 +8,31 @@
 
 /* Begin PBXBuildFile section */
 		055588BADAEEE3687997091D97DA45A2 /* NSObject+FBKVOController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B29B2FE632AC7588F3C4518ABBCF782 /* NSObject+FBKVOController.m */; };
-		196EA89AFDA04576A3B610141A6454BA /* TPTabPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0DF2AA679DFE2F333E152149738ABF /* TPTabPageViewController.m */; };
+		099101FA7D5303CA8E50A1FD348096FC /* TPPageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 9585EF5BAD9E0BA400D82DB903D9D9CD /* TPPageViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1CC30DE8376711D5A8B2C022DB6DC913 /* Pods-TPPageViewController_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F808F1B6D5E41FB26EF519B88C283261 /* Pods-TPPageViewController_Tests-dummy.m */; };
 		201F66ABDDFE0C681E9A62B8D07861E5 /* FBKVOController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2F99FCFB8BE21E7F5041B3FED08EB633 /* FBKVOController.m */; };
-		2BC8E8ADDB268EE048A6E50043DB2679 /* TPPageViewController-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = BA9CE4B5300C9E7124EA8E9485BDC2A9 /* TPPageViewController-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		30A97FEFDEBDA2A3A320A2B27EF91C5B /* KVOController-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 8C5200049C086A42983DF12E714D6D3D /* KVOController-dummy.m */; };
-		30C7D0678DF064F24EF89733F13ECE46 /* TPPageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = DFB48C558B03CA557FB95302A9FD746D /* TPPageViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3B0707233A917BC9BFFE14568BA3B752 /* Pods-TPPageViewController_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 38A2BC232C8FFA21143FF82BA86EEE98 /* Pods-TPPageViewController_Example-dummy.m */; };
+		3B2B166247C481CBB6AD335CFCD6C8E4 /* TPMagicTabPageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = AD7F0893F2FAA040E3708F3060637CE1 /* TPMagicTabPageViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4226A85480A5EAD69E28A0057CF2C25F /* Pods-TPPageViewController_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 7F84A442473C7A5BC3A7ACC3C9EACBB2 /* Pods-TPPageViewController_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		45CFAB2D2887BD0DBE018EDF6E705309 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3E2818B75DD663CFFC03EA5A7A8D5CA /* Foundation.framework */; };
-		4BA14280B3F8F9DBCEBB5014C782CB51 /* TPTabPageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 8A5798D5D9BFFD8481838EDA825ECC98 /* TPTabPageViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		51BD4A577CB3BDBCB01523442A8A2D83 /* TPPageViewController-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = F8622DC7E3967E716477D811ACB5B5BC /* TPPageViewController-dummy.m */; };
+		6625EACEF183E9FDF32DE7801F421575 /* TPTabPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 4391D340D8AA35573345E3A93AA06408 /* TPTabPageViewController.m */; };
 		6B5B9543E0D924AB1096E4FD1A312BF4 /* KVOController.h in Headers */ = {isa = PBXBuildFile; fileRef = 70E3D5FE0A39E470939552D2BC187F41 /* KVOController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		707844F269B64EF66E05E2E19E26C431 /* FBKVOController.h in Headers */ = {isa = PBXBuildFile; fileRef = 53EF635E16234F35EE4F8F011BDAF83A /* FBKVOController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7938D82053E615C94469353DF10B882F /* Pods-TPPageViewController_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = E8FC085DB0D4152A42AF742F07692AA9 /* Pods-TPPageViewController_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		80D7AAAD0D98D85D3DA488EA61E2F7FA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3E2818B75DD663CFFC03EA5A7A8D5CA /* Foundation.framework */; };
 		8EFD51BAE9F311412C3AA53461954BFA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3E2818B75DD663CFFC03EA5A7A8D5CA /* Foundation.framework */; };
-		8F5246439BFB9595A8B5CC22776D63F9 /* TPPageViewController-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FF008E42F3FA75C624B40CE1EDFDBBB /* TPPageViewController-dummy.m */; };
+		8FD279D6EDD2394A99D611DAC02CFFB0 /* TPMagicTabPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0BB2621439E72571A4281CD06AC42B5 /* TPMagicTabPageViewController.m */; };
+		9175FA260CE6A8BE002786881F78C653 /* WMMagicScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C7FA93E08CB667ED712A264FB0FAEE /* WMMagicScrollView.m */; };
 		A1DB62BF402DA76075C167D194E38167 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F3E2818B75DD663CFFC03EA5A7A8D5CA /* Foundation.framework */; };
+		B3C18C002C457A326DE343B8A89E230E /* TPPageViewController-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 36A94F51E929FBAFE53C134DB30C507E /* TPPageViewController-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B93438D105D3C47925587E4E76985615 /* TPTabPageViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 0F4D8D8FCBAB8813674C77986858E92E /* TPTabPageViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C559D5C9F61AD9819D4B34122BED6ED8 /* TPPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FD6CBDEBA5B82397564D6F339C93410D /* TPPageViewController.m */; };
+		D29A4AB23B3A4EA986BB04D10ED4D687 /* WMMagicScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = B3C64BDFD09CE20A34752ED239CA6F52 /* WMMagicScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D98FCBB04A70D6A0682F93632FAE833E /* KVOController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D334188F97ABD723E8683F73A59E241A /* KVOController.framework */; };
 		DE948C991023345324400449F80EDB91 /* NSObject+FBKVOController.h in Headers */ = {isa = PBXBuildFile; fileRef = D3E56EADBBB8AD53D7BE1B8BE1DB6268 /* NSObject+FBKVOController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		F52E1CEDE888346805D60B69C8E6AD9B /* KVOController-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D2CA5FAF55802ED6B58D6B5825BFB6D /* KVOController-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		FF944FF0C8EA2AE43E020BB6A967F4A1 /* TPPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F44D7038C3B2A5915358E3A832E08DB /* TPPageViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,23 +68,26 @@
 
 /* Begin PBXFileReference section */
 		07126A1D270A300A81934EE96B68E1EE /* Pods-TPPageViewController_Tests-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-TPPageViewController_Tests-resources.sh"; sourceTree = "<group>"; };
+		08D028623630B1E46B258359D2F29030 /* TPPageViewController.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TPPageViewController.xcconfig; sourceTree = "<group>"; };
 		08F4990DB9633D50728ECE107C937687 /* Pods-TPPageViewController_Tests-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-TPPageViewController_Tests-frameworks.sh"; sourceTree = "<group>"; };
 		0A53D3DE1C15ECC3995DE51E1634F324 /* Pods-TPPageViewController_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TPPageViewController_Example.release.xcconfig"; sourceTree = "<group>"; };
-		0B35A2F4D9D02A1A54B7BBB2C0E5DAE9 /* TPPageViewController.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = TPPageViewController.modulemap; sourceTree = "<group>"; };
 		0BD1ACB329FEA8CF30DACCAC37C6EADD /* Pods-TPPageViewController_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-TPPageViewController_Example-frameworks.sh"; sourceTree = "<group>"; };
+		0F4D8D8FCBAB8813674C77986858E92E /* TPTabPageViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TPTabPageViewController.h; path = TPPageViewController/Classes/TPTabPageViewController.h; sourceTree = "<group>"; };
 		1245DD03EAA761C6E7DB59CFD9174246 /* Pods-TPPageViewController_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-TPPageViewController_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		1949410FF2584C3F2088000DD345532E /* Pods-TPPageViewController_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-TPPageViewController_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
 		24390EFD555DD124430DFF9724065945 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		2B29B2FE632AC7588F3C4518ABBCF782 /* NSObject+FBKVOController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSObject+FBKVOController.m"; path = "FBKVOController/NSObject+FBKVOController.m"; sourceTree = "<group>"; };
 		2F99FCFB8BE21E7F5041B3FED08EB633 /* FBKVOController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FBKVOController.m; path = FBKVOController/FBKVOController.m; sourceTree = "<group>"; };
+		36A94F51E929FBAFE53C134DB30C507E /* TPPageViewController-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TPPageViewController-umbrella.h"; sourceTree = "<group>"; };
 		37DC9DFD20882FA1071035CF4BB05EAF /* Pods_TPPageViewController_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_TPPageViewController_Example.framework; path = "Pods-TPPageViewController_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		38A2BC232C8FFA21143FF82BA86EEE98 /* Pods-TPPageViewController_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-TPPageViewController_Example-dummy.m"; sourceTree = "<group>"; };
+		4391D340D8AA35573345E3A93AA06408 /* TPTabPageViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TPTabPageViewController.m; path = TPPageViewController/Classes/TPTabPageViewController.m; sourceTree = "<group>"; };
 		4556F42A794D00EC35D4A78FF28C7680 /* KVOController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = KVOController.framework; path = KVOController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		47E6743D6220A607D9E703D1C0E55C6E /* TPPageViewController.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = TPPageViewController.modulemap; sourceTree = "<group>"; };
 		4D2CA5FAF55802ED6B58D6B5825BFB6D /* KVOController-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "KVOController-umbrella.h"; sourceTree = "<group>"; };
 		53EF635E16234F35EE4F8F011BDAF83A /* FBKVOController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FBKVOController.h; path = FBKVOController/FBKVOController.h; sourceTree = "<group>"; };
 		57F9F8A85C9B3D27894164160381A457 /* Pods_TPPageViewController_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_TPPageViewController_Tests.framework; path = "Pods-TPPageViewController_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5F44D7038C3B2A5915358E3A832E08DB /* TPPageViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TPPageViewController.m; path = TPPageViewController/Classes/TPPageViewController.m; sourceTree = "<group>"; };
-		6FF008E42F3FA75C624B40CE1EDFDBBB /* TPPageViewController-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "TPPageViewController-dummy.m"; sourceTree = "<group>"; };
+		69F54399768214163BC536F8AD4D5431 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
 		70E3D5FE0A39E470939552D2BC187F41 /* KVOController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = KVOController.h; path = FBKVOController/KVOController.h; sourceTree = "<group>"; };
 		71BD70DD3A5AC057C45DA86BAB904356 /* Pods-TPPageViewController_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TPPageViewController_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		73032533A143DB69E6D7FF7294F2F0B1 /* TPPageViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = TPPageViewController.framework; path = TPPageViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -90,30 +97,31 @@
 		846A13C040A141D014EEF36E94FB0B00 /* KVOController.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = KVOController.xcconfig; sourceTree = "<group>"; };
 		8496A1D2FAF04642585139395B7824F7 /* Pods-TPPageViewController_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TPPageViewController_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		84EE8A5001BDB87E4A6DEC251294C088 /* Pods-TPPageViewController_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-TPPageViewController_Tests.modulemap"; sourceTree = "<group>"; };
-		84F2B04FF1596BEADD006A02A2E701CA /* TPPageViewController.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; path = TPPageViewController.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		8A5798D5D9BFFD8481838EDA825ECC98 /* TPTabPageViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TPTabPageViewController.h; path = TPPageViewController/Classes/TPTabPageViewController.h; sourceTree = "<group>"; };
 		8C5200049C086A42983DF12E714D6D3D /* KVOController-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "KVOController-dummy.m"; sourceTree = "<group>"; };
-		8E40E85E5C23D4789F6E86F98E6141A8 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		8E69E7D798E699993D7B1DF19E2CE426 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8FD493BB0C38775DA6A194C1CFFAAE06 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		901A6AC5651BC404D66196E40D5F1394 /* KVOController.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = KVOController.modulemap; sourceTree = "<group>"; };
-		9ACECD0A08740A64B482316B677171A7 /* TPPageViewController-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TPPageViewController-prefix.pch"; sourceTree = "<group>"; };
-		A10F983DCBFDE14F56A67D88C2559D82 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A8498D33265FBEFBBDCA5E5267443B10 /* TPPageViewController.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = TPPageViewController.xcconfig; sourceTree = "<group>"; };
+		9585EF5BAD9E0BA400D82DB903D9D9CD /* TPPageViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TPPageViewController.h; path = TPPageViewController/Classes/TPPageViewController.h; sourceTree = "<group>"; };
+		A8B9089CC5FDB1688BBA280E43559ED6 /* TPPageViewController.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; path = TPPageViewController.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		AD7F0893F2FAA040E3708F3060637CE1 /* TPMagicTabPageViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TPMagicTabPageViewController.h; path = TPPageViewController/Classes/TPMagicTabPageViewController.h; sourceTree = "<group>"; };
 		B3164D8F74A0607D3546D85F62E0853E /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		BA9CE4B5300C9E7124EA8E9485BDC2A9 /* TPPageViewController-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TPPageViewController-umbrella.h"; sourceTree = "<group>"; };
+		B3C64BDFD09CE20A34752ED239CA6F52 /* WMMagicScrollView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = WMMagicScrollView.h; path = TPPageViewController/Classes/WMMagicScrollView.h; sourceTree = "<group>"; };
+		C1411B3071BC081A10780EBF00992396 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		C4C7FA93E08CB667ED712A264FB0FAEE /* WMMagicScrollView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = WMMagicScrollView.m; path = TPPageViewController/Classes/WMMagicScrollView.m; sourceTree = "<group>"; };
+		C5A6E955D401AED3263B31267EE980E2 /* TPPageViewController-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "TPPageViewController-prefix.pch"; sourceTree = "<group>"; };
 		C829ABD0D596A8887ABDA04F1ACF2B90 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA5F1BB149A6F090D40CDDBA9F97D293 /* Pods-TPPageViewController_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-TPPageViewController_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		CA5FBAD2C45474603E49721BE2ABFF49 /* Pods-TPPageViewController_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-TPPageViewController_Example.modulemap"; sourceTree = "<group>"; };
-		D086883BB116121B6D3E69B088FCE100 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
 		D334188F97ABD723E8683F73A59E241A /* KVOController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = KVOController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3E56EADBBB8AD53D7BE1B8BE1DB6268 /* NSObject+FBKVOController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSObject+FBKVOController.h"; path = "FBKVOController/NSObject+FBKVOController.h"; sourceTree = "<group>"; };
-		DFB48C558B03CA557FB95302A9FD746D /* TPPageViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TPPageViewController.h; path = TPPageViewController/Classes/TPPageViewController.h; sourceTree = "<group>"; };
 		E8FC085DB0D4152A42AF742F07692AA9 /* Pods-TPPageViewController_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-TPPageViewController_Example-umbrella.h"; sourceTree = "<group>"; };
 		EEBC674511C0DB1C62E5C9D444894B49 /* KVOController-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "KVOController-prefix.pch"; sourceTree = "<group>"; };
+		F0BB2621439E72571A4281CD06AC42B5 /* TPMagicTabPageViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TPMagicTabPageViewController.m; path = TPPageViewController/Classes/TPMagicTabPageViewController.m; sourceTree = "<group>"; };
 		F23827DB18E4C00A4BBCC82E4CDDDED3 /* Pods-TPPageViewController_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-TPPageViewController_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		F3E2818B75DD663CFFC03EA5A7A8D5CA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		F808F1B6D5E41FB26EF519B88C283261 /* Pods-TPPageViewController_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-TPPageViewController_Tests-dummy.m"; sourceTree = "<group>"; };
-		FF0DF2AA679DFE2F333E152149738ABF /* TPTabPageViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TPTabPageViewController.m; path = TPPageViewController/Classes/TPTabPageViewController.m; sourceTree = "<group>"; };
+		F8622DC7E3967E716477D811ACB5B5BC /* TPPageViewController-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "TPPageViewController-dummy.m"; sourceTree = "<group>"; };
+		FD6CBDEBA5B82397564D6F339C93410D /* TPPageViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TPPageViewController.m; path = TPPageViewController/Classes/TPPageViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -153,12 +161,44 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		4BA55E99B6B1E1C0CC4F38CE4AC2D1CD /* Pod */ = {
+		0B9F90C4178D2AC31F2975928066C3E7 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				D086883BB116121B6D3E69B088FCE100 /* LICENSE */,
-				8E40E85E5C23D4789F6E86F98E6141A8 /* README.md */,
-				84F2B04FF1596BEADD006A02A2E701CA /* TPPageViewController.podspec */,
+				8E69E7D798E699993D7B1DF19E2CE426 /* Info.plist */,
+				47E6743D6220A607D9E703D1C0E55C6E /* TPPageViewController.modulemap */,
+				08D028623630B1E46B258359D2F29030 /* TPPageViewController.xcconfig */,
+				F8622DC7E3967E716477D811ACB5B5BC /* TPPageViewController-dummy.m */,
+				C5A6E955D401AED3263B31267EE980E2 /* TPPageViewController-prefix.pch */,
+				36A94F51E929FBAFE53C134DB30C507E /* TPPageViewController-umbrella.h */,
+			);
+			name = "Support Files";
+			path = "Example/Pods/Target Support Files/TPPageViewController";
+			sourceTree = "<group>";
+		};
+		17FD676959FE2BFE75AD17F643C9E217 /* TPPageViewController */ = {
+			isa = PBXGroup;
+			children = (
+				AD7F0893F2FAA040E3708F3060637CE1 /* TPMagicTabPageViewController.h */,
+				F0BB2621439E72571A4281CD06AC42B5 /* TPMagicTabPageViewController.m */,
+				9585EF5BAD9E0BA400D82DB903D9D9CD /* TPPageViewController.h */,
+				FD6CBDEBA5B82397564D6F339C93410D /* TPPageViewController.m */,
+				0F4D8D8FCBAB8813674C77986858E92E /* TPTabPageViewController.h */,
+				4391D340D8AA35573345E3A93AA06408 /* TPTabPageViewController.m */,
+				B3C64BDFD09CE20A34752ED239CA6F52 /* WMMagicScrollView.h */,
+				C4C7FA93E08CB667ED712A264FB0FAEE /* WMMagicScrollView.m */,
+				7670C48BC34D0F72AC0215B3C6B83BC8 /* Pod */,
+				0B9F90C4178D2AC31F2975928066C3E7 /* Support Files */,
+			);
+			name = TPPageViewController;
+			path = ../..;
+			sourceTree = "<group>";
+		};
+		7670C48BC34D0F72AC0215B3C6B83BC8 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				69F54399768214163BC536F8AD4D5431 /* LICENSE */,
+				C1411B3071BC081A10780EBF00992396 /* README.md */,
+				A8B9089CC5FDB1688BBA280E43559ED6 /* TPPageViewController.podspec */,
 			);
 			name = Pod;
 			sourceTree = "<group>";
@@ -177,32 +217,12 @@
 			path = "../Target Support Files/KVOController";
 			sourceTree = "<group>";
 		};
-		93A618A11E150179C6017F0056B7DF24 /* TPPageViewController */ = {
+		90065615D395AED2FA2BFA9CB5612B8E /* Development Pods */ = {
 			isa = PBXGroup;
 			children = (
-				DFB48C558B03CA557FB95302A9FD746D /* TPPageViewController.h */,
-				5F44D7038C3B2A5915358E3A832E08DB /* TPPageViewController.m */,
-				8A5798D5D9BFFD8481838EDA825ECC98 /* TPTabPageViewController.h */,
-				FF0DF2AA679DFE2F333E152149738ABF /* TPTabPageViewController.m */,
-				4BA55E99B6B1E1C0CC4F38CE4AC2D1CD /* Pod */,
-				9610EEFE05A80781BC3EB188CAE96D2A /* Support Files */,
+				17FD676959FE2BFE75AD17F643C9E217 /* TPPageViewController */,
 			);
-			name = TPPageViewController;
-			path = ../..;
-			sourceTree = "<group>";
-		};
-		9610EEFE05A80781BC3EB188CAE96D2A /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				A10F983DCBFDE14F56A67D88C2559D82 /* Info.plist */,
-				0B35A2F4D9D02A1A54B7BBB2C0E5DAE9 /* TPPageViewController.modulemap */,
-				A8498D33265FBEFBBDCA5E5267443B10 /* TPPageViewController.xcconfig */,
-				6FF008E42F3FA75C624B40CE1EDFDBBB /* TPPageViewController-dummy.m */,
-				9ACECD0A08740A64B482316B677171A7 /* TPPageViewController-prefix.pch */,
-				BA9CE4B5300C9E7124EA8E9485BDC2A9 /* TPPageViewController-umbrella.h */,
-			);
-			name = "Support Files";
-			path = "Example/Pods/Target Support Files/TPPageViewController";
+			name = "Development Pods";
 			sourceTree = "<group>";
 		};
 		9AE2BE0FA93463E53CA58C76D0893058 /* Pods-TPPageViewController_Tests */ = {
@@ -288,7 +308,7 @@
 			isa = PBXGroup;
 			children = (
 				24390EFD555DD124430DFF9724065945 /* Podfile */,
-				E902E0BB0E080D0A6DE021EA57EA5BFD /* Development Pods */,
+				90065615D395AED2FA2BFA9CB5612B8E /* Development Pods */,
 				9F9A65ACE42AF25FC4F056B4A4A973A3 /* Frameworks */,
 				F37D9E3DF4B7B276818A1977FF720682 /* Pods */,
 				C87D83AAF1990F70B1CE9A94AE175CFB /* Products */,
@@ -304,14 +324,6 @@
 			name = iOS;
 			sourceTree = "<group>";
 		};
-		E902E0BB0E080D0A6DE021EA57EA5BFD /* Development Pods */ = {
-			isa = PBXGroup;
-			children = (
-				93A618A11E150179C6017F0056B7DF24 /* TPPageViewController */,
-			);
-			name = "Development Pods";
-			sourceTree = "<group>";
-		};
 		F37D9E3DF4B7B276818A1977FF720682 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -323,16 +335,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		0D605FDB75CBA4D6CB243E366E620D98 /* Headers */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				2BC8E8ADDB268EE048A6E50043DB2679 /* TPPageViewController-umbrella.h in Headers */,
-				30C7D0678DF064F24EF89733F13ECE46 /* TPPageViewController.h in Headers */,
-				4BA14280B3F8F9DBCEBB5014C782CB51 /* TPTabPageViewController.h in Headers */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		20F48ECF88DD100A32BCF5AF041A01FC /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -349,6 +351,18 @@
 				F52E1CEDE888346805D60B69C8E6AD9B /* KVOController-umbrella.h in Headers */,
 				6B5B9543E0D924AB1096E4FD1A312BF4 /* KVOController.h in Headers */,
 				DE948C991023345324400449F80EDB91 /* NSObject+FBKVOController.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6C1263DADE92255E1BFF53FD596A4D6B /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B2B166247C481CBB6AD335CFCD6C8E4 /* TPMagicTabPageViewController.h in Headers */,
+				B3C18C002C457A326DE343B8A89E230E /* TPPageViewController-umbrella.h in Headers */,
+				099101FA7D5303CA8E50A1FD348096FC /* TPPageViewController.h in Headers */,
+				B93438D105D3C47925587E4E76985615 /* TPTabPageViewController.h in Headers */,
+				D29A4AB23B3A4EA986BB04D10ED4D687 /* WMMagicScrollView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -424,8 +438,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3623A6A38BE754713B851D2CBF755AE4 /* Build configuration list for PBXNativeTarget "TPPageViewController" */;
 			buildPhases = (
-				0D605FDB75CBA4D6CB243E366E620D98 /* Headers */,
-				A6E86BA914F57BFA1516045C3414DC13 /* Sources */,
+				6C1263DADE92255E1BFF53FD596A4D6B /* Headers */,
+				68E5604DE78DE9CFD46A9EAAF75C3CCD /* Sources */,
 				B12850466576A6DA2E60258D9416565E /* Frameworks */,
 				2C10F8F72CD985C0D6AA3341DADDF83D /* Resources */,
 			);
@@ -516,6 +530,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		68E5604DE78DE9CFD46A9EAAF75C3CCD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8FD279D6EDD2394A99D611DAC02CFFB0 /* TPMagicTabPageViewController.m in Sources */,
+				51BD4A577CB3BDBCB01523442A8A2D83 /* TPPageViewController-dummy.m in Sources */,
+				C559D5C9F61AD9819D4B34122BED6ED8 /* TPPageViewController.m in Sources */,
+				6625EACEF183E9FDF32DE7801F421575 /* TPTabPageViewController.m in Sources */,
+				9175FA260CE6A8BE002786881F78C653 /* WMMagicScrollView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8717993B7C4633BA6947022CCA5F8D52 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -523,16 +549,6 @@
 				201F66ABDDFE0C681E9A62B8D07861E5 /* FBKVOController.m in Sources */,
 				30A97FEFDEBDA2A3A320A2B27EF91C5B /* KVOController-dummy.m in Sources */,
 				055588BADAEEE3687997091D97DA45A2 /* NSObject+FBKVOController.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A6E86BA914F57BFA1516045C3414DC13 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8F5246439BFB9595A8B5CC22776D63F9 /* TPPageViewController-dummy.m in Sources */,
-				FF944FF0C8EA2AE43E020BB6A967F4A1 /* TPPageViewController.m in Sources */,
-				196EA89AFDA04576A3B610141A6454BA /* TPTabPageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -728,7 +744,7 @@
 		};
 		795F40C8D918EE2AAF20C63018FD9E6C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A8498D33265FBEFBBDCA5E5267443B10 /* TPPageViewController.xcconfig */;
+			baseConfigurationReference = 08D028623630B1E46B258359D2F29030 /* TPPageViewController.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
@@ -921,7 +937,7 @@
 		};
 		FD42046135AE990466F6A7CD17D90261 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A8498D33265FBEFBBDCA5E5267443B10 /* TPPageViewController.xcconfig */;
+			baseConfigurationReference = 08D028623630B1E46B258359D2F29030 /* TPPageViewController.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";

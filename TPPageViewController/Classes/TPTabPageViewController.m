@@ -9,12 +9,9 @@
 #import "TPTabPageViewController.h"
 #import <objc/runtime.h>
 #import "TPPageViewController.h"
-#import <KVOController/KVOController.h>
 
-static NSString* const TPContentOffsetKeyPath = @"contentOffset";
-
-static NSUInteger TPIndexFromView(UIView *view) {
-    return view.tag;
+static NSNumber* TPKeyFromIndex(NSUInteger index) {
+    return @(index);
 }
 
 @implementation UIViewController (TPTabPageViewController)
@@ -39,11 +36,6 @@ static NSUInteger TPIndexFromView(UIView *view) {
 @property (nonatomic, strong) NSCache<NSNumber *, UIViewController *> *viewControllerCache;
 
 @property (nonatomic, strong) UIView *tabBar;
-@property (nonatomic, assign) CGFloat tabBarHeight;
-
-@property (nonatomic, strong) UIView *headerView;
-@property (nonatomic, assign) CGFloat headerViewMinimumHeight;
-@property (nonatomic, assign) CGFloat headerViewMaximumHeight;
 
 @end
 
@@ -64,9 +56,10 @@ static NSUInteger TPIndexFromView(UIView *view) {
     [self reloadData];
 }
 
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
-    self.pageViewController.view.frame = self.view.bounds;
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    self.tabBar.frame = self.tabBarRect;
+    self.pageViewController.view.frame = self.pageContentRect;
 }
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex animated:(BOOL)animated {
@@ -86,31 +79,12 @@ static NSUInteger TPIndexFromView(UIView *view) {
     
     self.numberOfViewControllers = [self.dataSources numberOfViewControllersInPageViewController:self];
     
-    if (self.headerView.superview) {
-        [self.headerView removeFromSuperview];
-    }
     if (self.tabBar.superview) {
         [self.tabBar removeFromSuperview];
     }
-    
-    self.headerView = nil;
     self.tabBar = nil;
-    
-    if ([self.dataSources respondsToSelector:@selector(headerViewInPageViewController:)]) {
-        self.headerView = [self.dataSources headerViewInPageViewController:self];
-        self.headerViewMinimumHeight = [self.delegate pageViewController:self minimumHeightForHeaderView:self.headerView];
-        self.headerViewMaximumHeight = [self.delegate pageViewController:self maximumHeightForHeaderView:self.headerView];
-    }
-
     if ([self.dataSources respondsToSelector:@selector(tabBarInPageViewController:)]) {
         self.tabBar = [self.dataSources tabBarInPageViewController:self];
-        self.tabBarHeight = [self.delegate pageViewController:self heightForTabBar:self.tabBar];
-    }
-    
-    if (self.headerView) {
-        [self.view addSubview:self.headerView];
-    }
-    if (self.tabBar) {
         [self.view addSubview:self.tabBar];
     }
     
@@ -123,14 +97,14 @@ static NSUInteger TPIndexFromView(UIView *view) {
 #pragma mark - Utils
 
 - (UIViewController *)viewControllerAtIndex:(NSUInteger)index {
-    NSAssert(index < self.numberOfViewControllers, @"");
+    NSParameterAssert(index < self.numberOfViewControllers);
     
-    UIViewController *viewController = [self.viewControllerCache objectForKey:@(index)];
+    NSNumber *key = TPKeyFromIndex(index);
+    UIViewController *viewController = [self.viewControllerCache objectForKey:key];
     if (!viewController) {
         viewController = [self.dataSources pageViewController:self viewControllerAtIndex:index];
-        viewController.tp_pageIndex = @(index);
-        [self bindViewControllerIfNeeded:viewController atIndex:index];
-        [self.viewControllerCache setObject:viewController forKey:@(index)];
+        viewController.tp_pageIndex = key;
+        [self.viewControllerCache setObject:viewController forKey:key];
     }
     
     return viewController;
@@ -138,118 +112,6 @@ static NSUInteger TPIndexFromView(UIView *view) {
 
 - (NSUInteger)indexForViewController:(UIViewController *)viewController {
     return viewController.tp_pageIndex.unsignedIntegerValue;
-}
-
-- (CGFloat)pageContentMinimumTopInsetAtIndex:(NSUInteger)index {
-    return self.headerViewMinimumHeight + self.tabBarHeight;
-}
-
-- (CGFloat)pageContentMaximumTopInsetAtIndex:(NSUInteger)index {
-    return self.headerViewMaximumHeight + self.tabBarHeight;
-}
-
-- (UIScrollView *)contentScrollViewForViewController:(UIViewController *)viewController {
-    UIScrollView *scrollView = nil;
-    if ([viewController conformsToProtocol:@protocol(TPTabPageContentProtocol)]) {
-        scrollView = [(id<TPTabPageContentProtocol>)viewController preferredContentScrollView];
-    }
-    return scrollView;
-}
-
-- (void)configureContentScrollViewWithViewController:(UIViewController *)viewController {
-    UIScrollView *scrollView = [self contentScrollViewForViewController:viewController];
-    if (!scrollView) {
-        return;
-    }
-    CGFloat contentOffsetX = scrollView.contentOffset.x;
-    CGFloat contentOffsetY = scrollView.contentOffset.y;
-    
-    NSUInteger index = TPIndexFromView(scrollView);
-    CGFloat pageContentMinimumTopInset = [self pageContentMinimumTopInsetAtIndex:index];
-    CGFloat pageContentMaximumTopInset = [self pageContentMaximumTopInsetAtIndex:index];
-    
-    CGFloat tabBarMaxY = CGRectGetMaxY(self.tabBar.frame);
-    
-    if (ABS(tabBarMaxY - pageContentMinimumTopInset) < FLT_EPSILON) { // top
-        if (contentOffsetY < -pageContentMinimumTopInset) {
-            scrollView.contentOffset = CGPointMake(contentOffsetX, -pageContentMinimumTopInset);
-        }
-    } else if (ABS(tabBarMaxY - pageContentMaximumTopInset) < FLT_EPSILON) { // bottom
-        if (contentOffsetY > -pageContentMaximumTopInset) {
-            scrollView.contentOffset = CGPointMake(contentOffsetX, -pageContentMaximumTopInset);
-        }
-    } else { // other
-        scrollView.contentOffset = CGPointMake(contentOffsetX, -tabBarMaxY);
-    }
-}
-
-- (void)bindViewControllerIfNeeded:(UIViewController *)viewController atIndex:(NSUInteger)index {
-    UIScrollView *scrollView = [self contentScrollViewForViewController:viewController];
-    if (!scrollView) {
-        return;
-    }
-    
-    scrollView.tag = index;
-    
-    if (@available(iOS 11, *)) {
-        scrollView.contentInsetAdjustmentBehavior =  UIScrollViewContentInsetAdjustmentNever;
-    } else {
-        viewController.automaticallyAdjustsScrollViewInsets = NO;
-    }
-    
-    if (@available(iOS 13, *)) {
-        scrollView.automaticallyAdjustsScrollIndicatorInsets = NO;
-    }
-    
-    UIEdgeInsets contentInset = scrollView.contentInset;
-    
-    scrollView.contentInset = UIEdgeInsetsMake([self pageContentMaximumTopInsetAtIndex:index],
-                                               contentInset.left,
-                                               contentInset.bottom,
-                                               contentInset.right);
-    scrollView.scrollIndicatorInsets = scrollView.contentInset;
-    
-    __weak __typeof(self) weakSelf = self;
-    [self.KVOController observe:scrollView
-                        keyPath:NSStringFromSelector(@selector(contentOffset))
-                        options:NSKeyValueObservingOptionInitial | NSKeyValueObservingOptionNew
-                          block:^(id  _Nullable observer, id  _Nonnull object, NSDictionary<NSString *,id> * _Nonnull change) {
-        __strong __typeof(weakSelf) strongSelf = weakSelf;
-        [strongSelf contentScrollViewDidScroll:object];
-    }];
-
-    scrollView.contentOffset = CGPointMake(0, -scrollView.contentInset.top);
-}
-
-- (void)contentScrollViewDidScroll:(UIScrollView *)scrollView {
-    NSInteger index = TPIndexFromView(scrollView);
-    
-    if (index != self.selectedIndex) {
-        return;
-    }
-    
-    [self layoutHeaderViewAndTabBarByScrollView:scrollView];
-}
-
-#pragma mark - Layout
-
-- (void)layoutHeaderViewAndTabBarByScrollView:(UIScrollView *)scrollView {
-    CGRect frame = self.view.frame;
-    
-    NSUInteger index = TPIndexFromView(scrollView);
-    CGFloat contentOffsetY = scrollView.contentOffset.y;
-    CGFloat pageContentMinimumTopInset = [self pageContentMinimumTopInsetAtIndex:index];
-    CGFloat pageContentMaximumTopInset = [self pageContentMaximumTopInsetAtIndex:index];
-    
-    CGFloat tabBarMinimumMinY = pageContentMinimumTopInset - self.tabBarHeight;
-    CGFloat tabBarMaximumMinY = pageContentMaximumTopInset - self.tabBarHeight;
-    CGFloat tabBarMinY = -contentOffsetY - self.tabBarHeight;
-    
-    CGFloat fixedTarBarMinY = MIN(MAX(tabBarMinY, tabBarMinimumMinY), tabBarMaximumMinY);
-    CGFloat headerViewHeight = fixedTarBarMinY;
-    
-    self.tabBar.frame = CGRectMake(CGRectGetMinX(frame), fixedTarBarMinY, CGRectGetWidth(frame), self.tabBarHeight);
-    self.headerView.frame = CGRectMake(CGRectGetMinX(frame), CGRectGetMinY(frame), CGRectGetWidth(frame), headerViewHeight);
 }
 
 #pragma mark - TPPageViewControllerDataSource
@@ -279,8 +141,6 @@ static NSUInteger TPIndexFromView(UIView *view) {
 #pragma mark - TPPageViewControllerDelegate
 
 - (void)pageViewController:(nonnull TPPageViewController *)pageViewController willStartScrollingFromViewController:(nonnull UIViewController *)startingViewController destinationViewController:(nonnull UIViewController *)destinationViewController {
-    [self configureContentScrollViewWithViewController:destinationViewController];
-    
     if ([self.delegate respondsToSelector:@selector(pageViewController:willStartScrollingFromViewController:destinationViewController:)]) {
         [self.delegate pageViewController:self
      willStartScrollingFromViewController:startingViewController
@@ -318,6 +178,28 @@ static NSUInteger TPIndexFromView(UIView *view) {
 
 - (UIViewController *)selectedViewController {
     return self.pageViewController.selectedViewController;
+}
+
+- (CGFloat)tabBarHeight {
+    if ([self.delegate respondsToSelector:@selector(heightForTabBarInPageViewController:)]) {
+        return [self.delegate heightForTabBarInPageViewController:self];
+    }
+    return 0;
+}
+
+- (CGRect)tabBarRect {
+    return CGRectMake(0,
+                      0,
+                      CGRectGetWidth(self.view.frame),
+                      self.tabBarHeight);
+}
+
+- (CGRect)pageContentRect {
+    return CGRectMake(0,
+                      CGRectGetMaxY(self.tabBarRect),
+                      CGRectGetWidth(self.view.frame),
+                      CGRectGetHeight(self.view.frame) -
+                      CGRectGetMaxY(self.tabBarRect));
 }
 
 @end
