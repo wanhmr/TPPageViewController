@@ -75,7 +75,7 @@
 
 - (void)tapAction {
     TPMagicTabPageViewController *pageViewController = [TPMagicTabPageViewController new];
-    pageViewController.dataSources = self;
+    pageViewController.dataSource = self;
     pageViewController.delegate = self;
     pageViewController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:pageViewController animated:YES completion:nil];

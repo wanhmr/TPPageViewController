@@ -32,7 +32,7 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
 @end
 
 @implementation TPMagicTabPageViewController
-@dynamic dataSources;
+@dynamic dataSource;
 @dynamic delegate;
 
 - (void)loadView {
@@ -70,8 +70,8 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
         [self.headerView removeFromSuperview];
     }
     self.headerView = nil;
-    if ([self.dataSources respondsToSelector:@selector(headerViewInPageViewController:)]) {
-        self.headerView = [self.dataSources headerViewInPageViewController:self];
+    if ([self.dataSource respondsToSelector:@selector(headerViewInPageViewController:)]) {
+        self.headerView = [self.dataSource headerViewInPageViewController:self];
         [self.view addSubview:self.headerView];
     }
 }

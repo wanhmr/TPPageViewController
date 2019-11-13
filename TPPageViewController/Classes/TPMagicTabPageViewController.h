@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TPMagicTabPageViewController : TPTabPageViewController
 
-@property (nonatomic, weak) id<TPMagicTabPageViewControllerDataSource> dataSources;
+@property (nonatomic, weak) id<TPMagicTabPageViewControllerDataSource> dataSource;
 @property (nonatomic, weak) id<TPMagicTabPageViewControllerDelegate> delegate;
 
 @property (nonatomic, readonly) CGRect headerViewRect;
