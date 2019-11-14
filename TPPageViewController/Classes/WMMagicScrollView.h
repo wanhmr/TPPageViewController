@@ -53,6 +53,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property(nonatomic, assign) CGFloat headerViewMaximumHeight;
 
+@property (nonatomic, readonly) CGFloat maximumContentOffsetY;
+
 /**
  Delegate instance that adopt the MXScrollViewDelegate.
  */

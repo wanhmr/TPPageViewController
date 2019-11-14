@@ -7,7 +7,7 @@
 //
 
 #import "TPViewController.h"
-#import "TPMagicTabPageViewController.h"
+#import "TPMagicTabBarPageViewController.h"
 
 @interface TableView : UITableView
 
@@ -21,7 +21,7 @@
 
 @end
 
-@interface TPViewController () <UITableViewDelegate, UITableViewDataSource, TPMagicTabPageContentProtocol>
+@interface TPViewController () <UITableViewDelegate, UITableViewDataSource, TPPageContentProtocol>
 
 @property (nonatomic, strong) UITableView *tableView;
 

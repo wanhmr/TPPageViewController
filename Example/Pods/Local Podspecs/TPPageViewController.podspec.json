@@ -18,10 +18,5 @@
   "platforms": {
     "ios": "8.0"
   },
-  "source_files": "TPPageViewController/Classes/**/*",
-  "dependencies": {
-    "KVOController": [
-
-    ]
-  }
+  "source_files": "TPPageViewController/Classes/**/*"
 }

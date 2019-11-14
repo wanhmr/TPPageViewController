@@ -1,12 +1,12 @@
 //
-//  TPTabPageViewController.m
+//  TPTabBarPageViewController.m
 //  TPPageViewController_Example
 //
 //  Created by Tpphha on 2018/11/21.
 //  Copyright © 2018 tpx. All rights reserved.
 //
 
-#import "TPTabPageViewController.h"
+#import "TPTabBarPageViewController.h"
 #import <objc/runtime.h>
 #import "TPPageViewController.h"
 
@@ -14,7 +14,7 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
     return @(index);
 }
 
-@implementation UIViewController (TPTabPageViewController)
+@implementation UIViewController (TPTabBarPageViewController)
 
 - (void)setTp_pageIndex:(NSNumber *)tp_pageIndex {
     objc_setAssociatedObject(self, @selector(tp_pageIndex), tp_pageIndex, OBJC_ASSOCIATION_COPY_NONATOMIC);
@@ -31,13 +31,13 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
     TPPageViewControllerDelegate
 >
 
-@property (nonatomic, weak, readonly) TPTabPageViewController *tabPageViewController;
+@property (nonatomic, weak, readonly) TPTabBarPageViewController *tabPageViewController;
 
-- (instancetype)initWithTabPageViewController:(TPTabPageViewController *)tabPageViewController;
+- (instancetype)initWithTabPageViewController:(TPTabBarPageViewController *)tabPageViewController;
 
 @end
 
-@interface TPTabPageViewController ()
+@interface TPTabBarPageViewController ()
 
 @property (nonatomic, strong) TPPageViewController *pageViewController;
 @property (nonatomic, assign) NSUInteger numberOfViewControllers;
@@ -49,7 +49,7 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
 
 @end
 
-@implementation TPTabPageViewController
+@implementation TPTabBarPageViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -173,7 +173,7 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
 
 @implementation TPTabPageViewModel
 
-- (instancetype)initWithTabPageViewController:(TPTabPageViewController *)tabPageViewController {
+- (instancetype)initWithTabPageViewController:(TPTabBarPageViewController *)tabPageViewController {
     self = [super init];
     if (self) {
         _tabPageViewController = tabPageViewController;

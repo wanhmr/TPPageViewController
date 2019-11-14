@@ -8,10 +8,10 @@
 
 #import "GreetingViewController.h"
 #import "TPInfiniteViewController.h"
-#import "TPMagicTabPageViewController.h"
+#import "TPMagicTabBarPageViewController.h"
 #import "TPViewController.h"
 
-@interface PageViewController : TPTabPageViewController
+@interface PageViewController : TPTabBarPageViewController
 
 @property (nonatomic, assign) BOOL flag;
 
@@ -22,10 +22,12 @@
 
 @end
 
-@interface GreetingViewController () <TPMagicTabPageViewControllerDataSource, TPMagicTabPageViewControllerDelegate>
+@interface GreetingViewController () <TPMagicTabBarPageViewControllerDataSource, TPMagicTabBarPageViewControllerDelegate>
 
 @property (strong, nonatomic, nonnull) NSArray<NSString *> *greetings;
 @property (strong, nonatomic, nonnull) NSArray<UIColor *> *greetingColors;
+
+@property (nonatomic, strong) TPMagicTabBarPageViewController *pageViewController;
 
 @end
 
@@ -74,11 +76,13 @@
 }
 
 - (void)tapAction {
-    TPMagicTabPageViewController *pageViewController = [TPMagicTabPageViewController new];
+    TPMagicTabBarPageViewController *pageViewController = [TPMagicTabBarPageViewController new];
     pageViewController.dataSource = self;
     pageViewController.delegate = self;
     pageViewController.modalPresentationStyle = UIModalPresentationFullScreen;
     [self presentViewController:pageViewController animated:YES completion:nil];
+    
+    self.pageViewController = pageViewController;
 }
 
 - (void)setupGreetings {
@@ -92,13 +96,18 @@
                             ];
 }
 
+- (void)tapped:(UIButton *)sender {
+    [self.pageViewController scrollToHeaderViewPosition:TPMagicTabBarPageViewControllerHeaderViewPositionVisiableMaximum
+                                               animated:YES];
+}
+
 #pragma mark - TPStickyPageViewControllerDataSource
 
-- (NSUInteger)numberOfViewControllersInPageViewController:(TPTabPageViewController *)pageViewController {
+- (NSUInteger)numberOfViewControllersInPageViewController:(TPTabBarPageViewController *)pageViewController {
     return self.greetings.count;
 }
 
-- (UIViewController *)pageViewController:(TPTabPageViewController *)pageViewController viewControllerAtIndex:(NSUInteger)index {
+- (UIViewController *)pageViewController:(TPTabBarPageViewController *)pageViewController viewControllerAtIndex:(NSUInteger)index {
     if ([pageViewController isKindOfClass:PageViewController.class]) {
         TPViewController *viewController = [TPViewController new];
         viewController.greeting = self.greetings[index];
@@ -112,7 +121,7 @@
     return viewController;
 }
 
-- (UIView *)tabBarInPageViewController:(TPTabPageViewController *)pageViewController {
+- (UIView *)tabBarInPageViewController:(TPTabBarPageViewController *)pageViewController {
     UIView *tabBar = [UIView new];
     if ([pageViewController isKindOfClass:PageViewController.class]) {
         tabBar.backgroundColor = [UIColor redColor];
@@ -122,21 +131,22 @@
     return tabBar;
 }
 
-- (CGFloat)heightForTabBarInPageViewController:(TPTabPageViewController *)pageViewController {
+- (CGFloat)heightForTabBarInPageViewController:(TPTabBarPageViewController *)pageViewController {
     return 40;
 }
 
-- (UIView *)headerViewInPageViewController:(TPTabPageViewController *)pageViewController {
-    UIView *headerView = [UIView new];
+- (UIView *)headerViewInPageViewController:(TPTabBarPageViewController *)pageViewController {
+    UIButton *headerView = [UIButton buttonWithType:UIButtonTypeSystem];
     headerView.backgroundColor = [UIColor yellowColor];
+    [headerView addTarget:self action:@selector(tapped:) forControlEvents:UIControlEventTouchUpInside];
     return headerView;
 }
 
-- (CGFloat)minimumHeightForHeaderViewInPageViewController:(TPTabPageViewController *)pageViewController {
+- (CGFloat)minimumHeightForHeaderViewInPageViewController:(TPTabBarPageViewController *)pageViewController {
     return 0;
 }
 
-- (CGFloat)maximumHeightForHeaderViewInPageViewController:(TPTabPageViewController *)pageViewController {
+- (CGFloat)maximumHeightForHeaderViewInPageViewController:(TPTabBarPageViewController *)pageViewController {
     return 80;
 }
 

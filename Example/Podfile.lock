@@ -1,22 +1,15 @@
 PODS:
-  - KVOController (1.2.0)
-  - TPPageViewController (0.1.0):
-    - KVOController
+  - TPPageViewController (0.1.0)
 
 DEPENDENCIES:
   - TPPageViewController (from `../`)
-
-SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
-    - KVOController
 
 EXTERNAL SOURCES:
   TPPageViewController:
     :path: "../"
 
 SPEC CHECKSUMS:
-  KVOController: d72ace34afea42468329623b3379ab3cd1d286b6
-  TPPageViewController: e170c5d53f44dbe56d89515a7f110a234dbea431
+  TPPageViewController: cac83c9d55ba6ff4ddb4f93475397360b4427e30
 
 PODFILE CHECKSUM: 1b8bb6a8a53e7319fb73e48381f57543c41b85ca
 

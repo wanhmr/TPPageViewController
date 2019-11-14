@@ -1,11 +1,11 @@
 //
-//  TPMagicTabPageViewController.m
+//  TPMagicTabBarPageViewController.m
 //  KVOController
 //
 //  Created by Tpphha on 2019/11/13.
 //
 
-#import "TPMagicTabPageViewController.h"
+#import "TPMagicTabBarPageViewController.h"
 #import "WMMagicScrollView.h"
 
 static UIViewController * TPViewControllerFromView(UIView *view) {
@@ -18,7 +18,7 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
     return nil;
 }
 
-@interface TPMagicTabPageViewController () <WMMagicScrollViewDelegate>
+@interface TPMagicTabBarPageViewController () <WMMagicScrollViewDelegate>
 
 @property (nonatomic, readonly) CGFloat headerViewMinimumHeight;
 @property (nonatomic, readonly) CGFloat headerViewMaximumHeight;
@@ -27,11 +27,9 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
 
 @property (nonatomic, readonly) WMMagicScrollView *scrollView;
 
-@property (nonatomic, assign) CGFloat headerViewVisiableProgress;
-
 @end
 
-@implementation TPMagicTabPageViewController
+@implementation TPMagicTabBarPageViewController
 @dynamic dataSource;
 @dynamic delegate;
 
@@ -76,18 +74,24 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
     }
 }
 
-#pragma mark - Utils
-
-- (CGFloat)extraHeight {
-    return self.headerViewMaximumHeight - self.headerViewMinimumHeight;
+- (void)scrollToHeaderViewPosition:(TPMagicTabBarPageViewControllerHeaderViewPosition)headerViewPosition animated:(BOOL)animated {
+    CGPoint contentOffset = self.scrollView.contentOffset;
+    if (headerViewPosition == TPMagicTabBarPageViewControllerHeaderViewPositionVisiableMinimum) {
+        contentOffset.y = self.scrollView.maximumContentOffsetY;
+    } else if (headerViewPosition == TPMagicTabBarPageViewControllerHeaderViewPositionVisiableMaximum) {
+        contentOffset.y = 0;
+    }
+    [self.scrollView setContentOffset:contentOffset animated:animated];
 }
+
+#pragma mark - Utils
 
 - (void)updateHeaderViewVisiableProgressIfNeeded:(CGFloat)headerViewVisiableProgress {
     if (ABS(self.headerViewVisiableProgress - headerViewVisiableProgress) < FLT_EPSILON) {
         return;
     }
     
-    self.headerViewVisiableProgress = headerViewVisiableProgress;
+    _headerViewVisiableProgress = headerViewVisiableProgress;
     
     if ([self.delegate respondsToSelector:@selector(pageViewController:didChangeHeaderViewVisiableProgress:)]) {
         [self.delegate pageViewController:self didChangeHeaderViewVisiableProgress:headerViewVisiableProgress];
@@ -98,16 +102,16 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
 
 - (BOOL)scrollView:(WMMagicScrollView *)scrollView shouldScrollWithSubview:(UIScrollView *)subview {
     UIViewController *viewController = TPViewControllerFromView(subview);
-    if (![viewController conformsToProtocol:@protocol(TPMagicTabPageContentProtocol)]) {
+    if (![viewController conformsToProtocol:@protocol(TPPageContentProtocol)]) {
         return NO;
     }
     
-    return [(id<TPMagicTabPageContentProtocol>)viewController preferredContentScrollView] == subview;
+    return [(id<TPPageContentProtocol>)viewController preferredContentScrollView] == subview;
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     CGFloat contentOffsetY = scrollView.contentOffset.y;
-    CGFloat extraHeight = [self extraHeight];
+    CGFloat extraHeight = self.scrollView.maximumContentOffsetY;
     if (extraHeight < FLT_EPSILON) {
         return;
     }
@@ -154,7 +158,7 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
 
 - (CGRect)pageContentRect {
     CGRect pageContentRect = [super pageContentRect];
-    pageContentRect.size.height += [self extraHeight];
+    pageContentRect.size.height += self.scrollView.maximumContentOffsetY;
     return pageContentRect;
 }
 

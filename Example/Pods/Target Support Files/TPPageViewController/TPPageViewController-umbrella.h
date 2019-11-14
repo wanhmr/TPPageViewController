@@ -10,9 +10,9 @@
 #endif
 #endif
 
-#import "TPMagicTabPageViewController.h"
+#import "TPMagicTabBarPageViewController.h"
 #import "TPPageViewController.h"
-#import "TPTabPageViewController.h"
+#import "TPTabBarPageViewController.h"
 #import "WMMagicScrollView.h"
 
 FOUNDATION_EXPORT double TPPageViewControllerVersionNumber;

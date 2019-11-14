@@ -99,6 +99,10 @@ static void * const kMXScrollViewKVOContext = (void*)&kMXScrollViewKVOContext;
     return self.forwarder.delegate;
 }
 
+- (CGFloat)maximumContentOffsetY {
+    return _headerViewMaximumHeight - _headerViewMinimumHeight;
+}
+
 #pragma mark <UIGestureRecognizerDelegate>
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
@@ -177,7 +181,7 @@ static void * const kMXScrollViewKVOContext = (void*)&kMXScrollViewKVOContext;
         
         if (ABS(diff) < FLT_EPSILON || !_isObserving) return;
         
-        CGFloat maximumContentOffsetY = _headerViewMaximumHeight - _headerViewMinimumHeight;
+        CGFloat maximumContentOffsetY = self.maximumContentOffsetY;
         if (object == self) {
             //Adjust self scroll offset when scroll down
             if (diff > 0 && _lock) {
