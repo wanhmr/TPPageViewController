@@ -133,6 +133,14 @@
 
 #pragma mark - Accessors
 
+- (void)setSelectedIndex:(NSUInteger)selectedIndex {
+    [self setSelectedIndex:selectedIndex animated:NO];
+}
+
+- (NSUInteger)selectedIndex {
+    return self.selectedViewController.tp_pageIndex.unsignedIntegerValue;
+}
+
 - (UIViewController *)selectedViewController {
     return self.pageViewController.selectedViewController;
 }
