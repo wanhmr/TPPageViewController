@@ -22,7 +22,10 @@
 
 @end
 
-@interface GreetingViewController () <TPMagicTabBarPageViewControllerDataSource, TPMagicTabBarPageViewControllerDelegate>
+@interface GreetingViewController () <
+    TPMagicTabBarPageViewControllerDataSource,
+    TPMagicTabBarPageViewControllerDelegate
+>
 
 @property (strong, nonatomic, nonnull) NSArray<NSString *> *greetings;
 @property (strong, nonatomic, nonnull) NSArray<UIColor *> *greetingColors;
@@ -143,11 +146,11 @@
 }
 
 - (CGFloat)minimumHeightForHeaderViewInPageViewController:(TPTabBarPageViewController *)pageViewController {
-    return 0;
+    return 40;
 }
 
 - (CGFloat)maximumHeightForHeaderViewInPageViewController:(TPTabBarPageViewController *)pageViewController {
-    return 80;
+    return 120;
 }
 
 @end

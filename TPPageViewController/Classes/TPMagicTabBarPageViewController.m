@@ -58,8 +58,8 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
     self.headerView.frame = self.headerViewRect;
 }
 
-- (void)reloadData {
-    [super reloadData];
+- (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex {
+    [super reloadDataWithSelectedIndex:selectedIndex];
     
     self.scrollView.headerViewMinimumHeight = self.headerViewMinimumHeight;
     self.scrollView.headerViewMaximumHeight = self.headerViewMaximumHeight;
@@ -72,6 +72,8 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
         self.headerView = [self.dataSource headerViewInPageViewController:self];
         [self.view addSubview:self.headerView];
     }
+    
+    [self updateHeaderViewVisiableProgressIfNeeded];
 }
 
 - (void)scrollToHeaderViewPosition:(TPMagicTabBarPageViewControllerHeaderViewPosition)headerViewPosition animated:(BOOL)animated {
@@ -86,7 +88,16 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
 
 #pragma mark - Utils
 
-- (void)updateHeaderViewVisiableProgressIfNeeded:(CGFloat)headerViewVisiableProgress {
+- (void)updateHeaderViewVisiableProgressIfNeeded {
+    CGFloat contentOffsetY = self.scrollView.contentOffset.y;
+    CGFloat maximumContentOffsetY = self.scrollView.maximumContentOffsetY;
+    if (maximumContentOffsetY < FLT_EPSILON) {
+        return;
+    }
+    
+    CGFloat headerViewVisiableProgress = 1 - contentOffsetY / maximumContentOffsetY;
+    headerViewVisiableProgress = MIN(1, MAX(0, headerViewVisiableProgress));
+    
     if (ABS(self.headerViewVisiableProgress - headerViewVisiableProgress) < FLT_EPSILON) {
         return;
     }
@@ -110,16 +121,7 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    CGFloat contentOffsetY = scrollView.contentOffset.y;
-    CGFloat extraHeight = self.scrollView.maximumContentOffsetY;
-    if (extraHeight < FLT_EPSILON) {
-        return;
-    }
-    
-    CGFloat progress = 1 - contentOffsetY / extraHeight;
-    progress = MIN(1, MAX(0, progress));
-    
-    [self updateHeaderViewVisiableProgressIfNeeded:progress];
+    [self updateHeaderViewVisiableProgressIfNeeded];
 }
 
 #pragma mark - Accessors

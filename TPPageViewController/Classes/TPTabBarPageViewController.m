@@ -10,23 +10,19 @@
 #import <objc/runtime.h>
 #import "TPPageViewController.h"
 
-static NSNumber* TPKeyFromIndex(NSUInteger index) {
-    return @(index);
-}
-
 @implementation UIViewController (TPTabBarPageViewController)
-
-- (void)setTp_pageIndex:(NSNumber *)tp_pageIndex {
-    objc_setAssociatedObject(self, @selector(tp_pageIndex), tp_pageIndex, OBJC_ASSOCIATION_COPY_NONATOMIC);
-}
 
 - (NSNumber *)tp_pageIndex {
     return objc_getAssociatedObject(self, _cmd);
 }
 
+- (void)tp_setPageIndex:(NSNumber *)pageIndex {
+    objc_setAssociatedObject(self, @selector(tp_pageIndex), pageIndex, OBJC_ASSOCIATION_COPY_NONATOMIC);
+}
+
 @end
 
-@interface TPTabPageViewModel : NSObject <
+@interface TPTabBarPageViewModel : NSObject <
     TPPageViewControllerDataSource,
     TPPageViewControllerDelegate
 >
@@ -45,7 +41,7 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
 
 @property (nonatomic, strong) UIView *tabBar;
 
-@property (nonatomic, strong) TPTabPageViewModel *tabPageViewModel;
+@property (nonatomic, strong) TPTabBarPageViewModel *tabBarPageViewModel;
 
 @end
 
@@ -57,11 +53,11 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     
-    self.tabPageViewModel = [[TPTabPageViewModel alloc] initWithTabPageViewController:self];
+    self.tabBarPageViewModel = [[TPTabBarPageViewModel alloc] initWithTabPageViewController:self];
     
     TPPageViewController *pageViewController = [[TPPageViewController alloc] initWithNavigationOrientation:TPPageViewControllerNavigationOrientationHorizontal];
-    pageViewController.delegate = self.tabPageViewModel;
-    pageViewController.dataSource = self.tabPageViewModel;
+    pageViewController.delegate = self.tabBarPageViewModel;
+    pageViewController.dataSource = self.tabBarPageViewModel;
     [self addChildViewController:pageViewController];
     [self.view addSubview:pageViewController.view];
     [pageViewController didMoveToParentViewController:self];
@@ -69,7 +65,7 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
     
     self.viewControllerCache = [NSCache new];
     
-    [self reloadData];
+    [self reloadDataWithSelectedIndex:self.defaultSelectedIndex];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -80,15 +76,17 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
 
 - (void)setSelectedIndex:(NSUInteger)selectedIndex animated:(BOOL)animated {
     if (selectedIndex >= self.numberOfViewControllers) {
+        NSAssert(NO, @"The selectedIndex is invalid.");
         return;
     }
     
-    if (self.selectedViewController && self.selectedIndex == selectedIndex) {
+    NSUInteger currentSelectedIndex = self.selectedIndex;
+    if (self.selectedViewController && selectedIndex == currentSelectedIndex) {
         return;
     }
     
     TPPageViewControllerNavigationDirection direction = TPPageViewControllerNavigationDirectionForward;
-    if (selectedIndex < self.selectedIndex) {
+    if (selectedIndex < currentSelectedIndex) {
         direction = TPPageViewControllerNavigationDirectionReverse;
     }
     
@@ -98,7 +96,7 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
                                        completion:nil];
 }
 
-- (void)reloadData {
+- (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex {
     [self.viewControllerCache removeAllObjects];
     
     self.numberOfViewControllers = [self.dataSource numberOfViewControllersInPageViewController:self];
@@ -112,36 +110,28 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
         [self.view addSubview:self.tabBar];
     }
     
-    [self setSelectedIndex:self.selectedIndex animated:NO];
+    [self setSelectedIndex:selectedIndex animated:NO];
+}
+
+- (void)reloadData {
+    [self reloadDataWithSelectedIndex:self.selectedIndex];
 }
 
 - (UIViewController *)viewControllerAtIndex:(NSUInteger)index {
     NSParameterAssert(index < self.numberOfViewControllers);
     
-    NSNumber *key = TPKeyFromIndex(index);
-    UIViewController *viewController = [self.viewControllerCache objectForKey:key];
+    NSNumber *indexNumber = @(index);
+    UIViewController *viewController = [self.viewControllerCache objectForKey:indexNumber];
     if (!viewController) {
         viewController = [self.dataSource pageViewController:self viewControllerAtIndex:index];
-        viewController.tp_pageIndex = key;
-        [self.viewControllerCache setObject:viewController forKey:key];
+        [viewController tp_setPageIndex:indexNumber];
+        [self.viewControllerCache setObject:viewController forKey:indexNumber];
     }
     
     return viewController;
 }
 
-- (NSUInteger)indexForViewController:(UIViewController *)viewController {
-    return viewController.tp_pageIndex.unsignedIntegerValue;
-}
-
 #pragma mark - Accessors
-
-- (void)setSelectedIndex:(NSUInteger)selectedIndex {
-    [self setSelectedIndex:selectedIndex animated:NO];
-}
-
-- (NSUInteger)selectedIndex {
-    return self.selectedViewController.tp_pageIndex.unsignedIntegerValue;
-}
 
 - (UIViewController *)selectedViewController {
     return self.pageViewController.selectedViewController;
@@ -171,7 +161,7 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
 
 @end
 
-@implementation TPTabPageViewModel
+@implementation TPTabBarPageViewModel
 
 - (instancetype)initWithTabPageViewController:(TPTabBarPageViewController *)tabPageViewController {
     self = [super init];
@@ -184,7 +174,7 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
 #pragma mark - TPPageViewControllerDataSource
 
 - (nullable UIViewController *)pageViewController:(nonnull TPPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
-    NSUInteger index = [self.tabPageViewController indexForViewController:viewController];
+    NSUInteger index = viewController.tp_pageIndex.unsignedIntegerValue;
     if (index >= 1 && index < self.tabPageViewController.numberOfViewControllers) {
         NSUInteger beforeIndex = index - 1;
         return [self.tabPageViewController viewControllerAtIndex:beforeIndex];
@@ -194,7 +184,7 @@ static NSNumber* TPKeyFromIndex(NSUInteger index) {
 }
 
 - (nullable UIViewController *)pageViewController:(nonnull TPPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
-    NSUInteger index = [self.tabPageViewController indexForViewController:viewController];
+    NSUInteger index = viewController.tp_pageIndex.unsignedIntegerValue;
     if (index >= 0 && index < self.tabPageViewController.numberOfViewControllers) {
         NSUInteger afterIndex = index + 1;
         if (afterIndex < self.tabPageViewController.numberOfViewControllers) {
