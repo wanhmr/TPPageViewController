@@ -22,7 +22,7 @@ pod 'TPPageViewController'
 
 ## Author
 
-tpx, tpx@meitu.com
+tpphha, tpphha@gmail.com
 
 ## License
 
