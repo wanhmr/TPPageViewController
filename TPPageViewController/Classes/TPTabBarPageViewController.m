@@ -138,7 +138,8 @@
 }
 
 - (NSUInteger)selectedIndex {
-    return self.selectedViewController.tp_pageIndex.unsignedIntegerValue;
+    NSNumber *index = self.selectedViewController.tp_pageIndex;
+    return index ? index.unsignedIntegerValue : 0;
 }
 
 - (UIViewController *)selectedViewController {
