@@ -27,9 +27,9 @@
     TPPageViewControllerDelegate
 >
 
-@property (nonatomic, weak, readonly) TPTabBarPageViewController *tabPageViewController;
+@property (nonatomic, weak, readonly) TPTabBarPageViewController *tabBarPageViewController;
 
-- (instancetype)initWithTabPageViewController:(TPTabBarPageViewController *)tabPageViewController;
+- (instancetype)initWithTabBarPageViewController:(TPTabBarPageViewController *)tabBarPageViewController;
 
 @end
 
@@ -53,7 +53,7 @@
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     
-    self.tabBarPageViewModel = [[TPTabBarPageViewModel alloc] initWithTabPageViewController:self];
+    self.tabBarPageViewModel = [[TPTabBarPageViewModel alloc] initWithTabBarPageViewController:self];
     
     TPPageViewController *pageViewController = [[TPPageViewController alloc] initWithNavigationOrientation:TPPageViewControllerNavigationOrientationHorizontal];
     pageViewController.delegate = self.tabBarPageViewModel;
@@ -110,7 +110,9 @@
         [self.view addSubview:self.tabBar];
     }
     
-    [self setSelectedIndex:selectedIndex animated:NO];
+    if (self.numberOfViewControllers > 0) {
+        [self setSelectedIndex:selectedIndex animated:NO];
+    }
 }
 
 - (void)reloadData {
@@ -172,10 +174,10 @@
 
 @implementation TPTabBarPageViewModel
 
-- (instancetype)initWithTabPageViewController:(TPTabBarPageViewController *)tabPageViewController {
+- (instancetype)initWithTabBarPageViewController:(TPTabBarPageViewController *)tabBarPageViewController {
     self = [super init];
     if (self) {
-        _tabPageViewController = tabPageViewController;
+        _tabBarPageViewController = tabBarPageViewController;
     }
     return self;
 }
@@ -184,9 +186,9 @@
 
 - (nullable UIViewController *)pageViewController:(nonnull TPPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
     NSUInteger index = viewController.tp_pageIndex.unsignedIntegerValue;
-    if (index >= 1 && index < self.tabPageViewController.numberOfViewControllers) {
+    if (index >= 1 && index < self.tabBarPageViewController.numberOfViewControllers) {
         NSUInteger beforeIndex = index - 1;
-        return [self.tabPageViewController viewControllerAtIndex:beforeIndex];
+        return [self.tabBarPageViewController viewControllerAtIndex:beforeIndex];
     }
     
     return nil;
@@ -194,10 +196,10 @@
 
 - (nullable UIViewController *)pageViewController:(nonnull TPPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
     NSUInteger index = viewController.tp_pageIndex.unsignedIntegerValue;
-    if (index >= 0 && index < self.tabPageViewController.numberOfViewControllers) {
+    if (index >= 0 && index < self.tabBarPageViewController.numberOfViewControllers) {
         NSUInteger afterIndex = index + 1;
-        if (afterIndex < self.tabPageViewController.numberOfViewControllers) {
-            return [self.tabPageViewController viewControllerAtIndex:afterIndex];
+        if (afterIndex < self.tabBarPageViewController.numberOfViewControllers) {
+            return [self.tabBarPageViewController viewControllerAtIndex:afterIndex];
         }
     }
     
@@ -207,16 +209,16 @@
 #pragma mark - TPPageViewControllerDelegate
 
 - (void)pageViewController:(nonnull TPPageViewController *)pageViewController willStartScrollingFromViewController:(nonnull UIViewController *)startingViewController destinationViewController:(nonnull UIViewController *)destinationViewController {
-    if ([self.tabPageViewController.delegate respondsToSelector:@selector(pageViewController:willStartScrollingFromViewController:destinationViewController:)]) {
-        [self.tabPageViewController.delegate pageViewController:self.tabPageViewController
+    if ([self.tabBarPageViewController.delegate respondsToSelector:@selector(pageViewController:willStartScrollingFromViewController:destinationViewController:)]) {
+        [self.tabBarPageViewController.delegate pageViewController:self.tabBarPageViewController
                            willStartScrollingFromViewController:startingViewController
                                       destinationViewController:destinationViewController];
     }
 }
 
 - (void)pageViewController:(nonnull TPPageViewController *)pageViewController isScrollingFromViewController:(nonnull UIViewController *)startingViewController destinationViewController:(nonnull UIViewController *)destinationViewController progress:(CGFloat)progress {
-    if ([self.tabPageViewController.delegate respondsToSelector:@selector(pageViewController:isScrollingFromViewController:destinationViewController:progress:)]) {
-        [self.tabPageViewController.delegate pageViewController:self.tabPageViewController
+    if ([self.tabBarPageViewController.delegate respondsToSelector:@selector(pageViewController:isScrollingFromViewController:destinationViewController:progress:)]) {
+        [self.tabBarPageViewController.delegate pageViewController:self.tabBarPageViewController
                                   isScrollingFromViewController:startingViewController
                                       destinationViewController:destinationViewController
                                                        progress:progress];
@@ -224,8 +226,8 @@
 }
 
 - (void)pageViewController:(nonnull TPPageViewController *)pageViewController didFinishScrollingFromViewController:(nonnull UIViewController *)startingViewController destinationViewController:(nonnull UIViewController *)destinationViewController transitionCompleted:(BOOL)completed {
-    if ([self.tabPageViewController.delegate respondsToSelector:@selector(pageViewController:didFinishScrollingFromViewController:destinationViewController:transitionCompleted:)]) {
-        [self.tabPageViewController.delegate pageViewController:self.tabPageViewController
+    if ([self.tabBarPageViewController.delegate respondsToSelector:@selector(pageViewController:didFinishScrollingFromViewController:destinationViewController:transitionCompleted:)]) {
+        [self.tabBarPageViewController.delegate pageViewController:self.tabBarPageViewController
                            didFinishScrollingFromViewController:startingViewController
                                       destinationViewController:destinationViewController
                                             transitionCompleted:completed];
