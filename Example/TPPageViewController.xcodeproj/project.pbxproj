@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3D11CDE420EB9EEE00D8B689 /* GreetingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D11CDE020EB9EED00D8B689 /* GreetingViewController.m */; };
 		3D11CDE520EB9EEE00D8B689 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D11CDE220EB9EEE00D8B689 /* RootViewController.m */; };
+		3D2A07A32387818700D4D298 /* TPUIPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D2A07A22387818700D4D298 /* TPUIPageViewController.m */; };
 		3D8BE8C420EBA65E00EBA9D4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D8BE8C320EBA65E00EBA9D4 /* Main.storyboard */; };
 		3D8BE8C720ECAE9D00EBA9D4 /* TPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D8BE8C620ECAE9D00EBA9D4 /* TPViewController.m */; };
 		3D8BE8CA20ECB00C00EBA9D4 /* TPInfiniteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D8BE8C920ECB00C00EBA9D4 /* TPInfiniteViewController.m */; };
@@ -45,6 +46,8 @@
 		3D11CDE120EB9EED00D8B689 /* GreetingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GreetingViewController.h; sourceTree = "<group>"; };
 		3D11CDE220EB9EEE00D8B689 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		3D11CDE320EB9EEE00D8B689 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		3D2A07A12387818700D4D298 /* TPUIPageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TPUIPageViewController.h; sourceTree = "<group>"; };
+		3D2A07A22387818700D4D298 /* TPUIPageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TPUIPageViewController.m; sourceTree = "<group>"; };
 		3D8BE8C320EBA65E00EBA9D4 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		3D8BE8C520ECAE9D00EBA9D4 /* TPViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TPViewController.h; sourceTree = "<group>"; };
 		3D8BE8C620ECAE9D00EBA9D4 /* TPViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TPViewController.m; sourceTree = "<group>"; };
@@ -151,6 +154,8 @@
 				3D8BE8C620ECAE9D00EBA9D4 /* TPViewController.m */,
 				3D8BE8C820ECB00C00EBA9D4 /* TPInfiniteViewController.h */,
 				3D8BE8C920ECB00C00EBA9D4 /* TPInfiniteViewController.m */,
+				3D2A07A12387818700D4D298 /* TPUIPageViewController.h */,
+				3D2A07A22387818700D4D298 /* TPUIPageViewController.m */,
 				3D8BE8C320EBA65E00EBA9D4 /* Main.storyboard */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
@@ -379,6 +384,7 @@
 				3D8BE8C720ECAE9D00EBA9D4 /* TPViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				3D11CDE420EB9EEE00D8B689 /* GreetingViewController.m in Sources */,
+				3D2A07A32387818700D4D298 /* TPUIPageViewController.m in Sources */,
 				3D8BE8CA20ECB00C00EBA9D4 /* TPInfiniteViewController.m in Sources */,
 				3D11CDE520EB9EEE00D8B689 /* RootViewController.m in Sources */,
 			);

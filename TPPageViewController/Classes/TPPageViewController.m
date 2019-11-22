@@ -29,6 +29,8 @@
 
 @property (nonatomic, copy) TPPageViewControllerTransitionCompletionHandler didFinishScrollingCompletionHandler;
 
+@property (nonatomic, copy) NSNumber *isViewAppearingValue;
+
 @end
 
 @implementation TPPageViewController
@@ -63,7 +65,10 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.selectedViewController beginAppearanceTransition:YES animated:animated];
+    if (self.isViewAppearingValue && !self.isViewAppearingValue.boolValue) {
+        self.isViewAppearingValue = @YES;
+        [self.selectedViewController beginAppearanceTransition:YES animated:animated];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -73,6 +78,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    self.isViewAppearingValue = @NO;
     [self.selectedViewController beginAppearanceTransition:NO animated:animated];
 }
 

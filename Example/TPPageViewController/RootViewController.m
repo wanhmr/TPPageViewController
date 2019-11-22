@@ -7,8 +7,9 @@
 //
 
 #import "RootViewController.h"
+#import "TPUIPageViewController.h"
 
-@interface RootViewController ()
+@interface RootViewController () <UIPageViewControllerDataSource>
 
 @end
 
@@ -19,22 +20,31 @@
     
     [self setupGreetings];
     
+    GreetingViewController *currentViewController = [self viewControllerAtIndex:0];
+    
     // Instantiate EMPageViewController and set the data source and delegate to 'self'
-//    TPPageViewController *pageViewController = [[TPPageViewController alloc] init];
+    TPPageViewController *pageViewController = [[TPPageViewController alloc] init];
     
     // Or, for a vertical orientation
-     TPPageViewController *pageViewController = [[TPPageViewController alloc] initWithNavigationOrientation:TPPageViewControllerNavigationOrientationVertical];
-    
+//    TPPageViewController *pageViewController = [[TPPageViewController alloc] initWithNavigationOrientation:TPPageViewControllerNavigationOrientationVertical];
+//
     pageViewController.dataSource = self;
     pageViewController.delegate = self;
-    
-    // Set the initially selected view controller
-    // IMPORTANT: If you are using a dataSource, make sure you set it BEFORE calling selectViewController:direction:animated:completion
-    GreetingViewController *currentViewController = [self viewControllerAtIndex:0];
+//
+//    // Set the initially selected view controller
+//    // IMPORTANT: If you are using a dataSource, make sure you set it BEFORE calling selectViewController:direction:animated:completion
     [pageViewController selectViewController:currentViewController
                                    direction:TPPageViewControllerNavigationDirectionForward
                                     animated:NO
                                   completion:nil];
+    
+//    TPUIPageViewController *pageViewController = [[TPUIPageViewController alloc] init];
+//    pageViewController.delegate = self;
+//    pageViewController.dataSource = self;
+//    [pageViewController setViewControllers:@[currentViewController]
+//                                 direction:UIPageViewControllerNavigationDirectionForward
+//                                  animated:YES
+//                                completion:nil];
     
     // Add EMPageViewController to the root view controller
     [self addChildViewController:pageViewController];
@@ -42,6 +52,11 @@
     [pageViewController didMoveToParentViewController:self];
     
     self.pageViewController = pageViewController;
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    NSLog(@"--------");
 }
 
 - (BOOL)prefersStatusBarHidden {
