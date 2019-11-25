@@ -183,6 +183,10 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
     return self.pageViewController.selectedViewController;
 }
 
+- (BOOL)isPageScrolling {
+    return self.pageViewController.isScrolling;
+}
+
 - (CGFloat)tabBarHeight {
     if ([self.delegate respondsToSelector:@selector(heightForTabBarInPageViewController:)]) {
         return [self.delegate heightForTabBarInPageViewController:self];

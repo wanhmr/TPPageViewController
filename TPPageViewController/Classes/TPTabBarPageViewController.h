@@ -32,6 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign, readonly) NSUInteger numberOfViewControllers;
 
+@property (nonatomic, readonly) BOOL isPageScrolling;
+
 @property (nonatomic, readonly) CGFloat tabBarHeight;
 
 @property (nonatomic, readonly) CGRect tabBarRect;

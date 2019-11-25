@@ -18,7 +18,7 @@
 @property (nonatomic, strong) UIViewController *selectedViewController;
 @property (nonatomic, strong) UIViewController *afterViewController;
 
-@property (nonatomic, assign, getter=isScrolling) BOOL scrolling;
+@property (nonatomic, assign) BOOL scrolling;
 
 // Flag used to prevent isScrolling delegate when shifting scrollView
 @property (nonatomic, assign, getter=isAdjustingContentOffset) BOOL adjustingContentOffset;
