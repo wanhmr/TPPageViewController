@@ -13,7 +13,7 @@
 		3D8BE8C420EBA65E00EBA9D4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D8BE8C320EBA65E00EBA9D4 /* Main.storyboard */; };
 		3D8BE8C720ECAE9D00EBA9D4 /* TPViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D8BE8C620ECAE9D00EBA9D4 /* TPViewController.m */; };
 		3D8BE8CA20ECB00C00EBA9D4 /* TPInfiniteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D8BE8C920ECB00C00EBA9D4 /* TPInfiniteViewController.m */; };
-		3F22AF23F181795CF0A2D747 /* Pods_TPPageViewController_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCCAAA6078F3386A224E5F1B /* Pods_TPPageViewController_Tests.framework */; };
+		464A293C6B7AFC3E94723CD1 /* libPods-TPPageViewController_Example.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E3D63BF1358FE61D3866161A /* libPods-TPPageViewController_Example.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -27,7 +27,7 @@
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
-		EEF01F34295E6AD3CA25F095 /* Pods_TPPageViewController_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68DCF888AB9D45B569519462 /* Pods_TPPageViewController_Example.framework */; };
+		F2F801CCFDCB2E4A85FEB7EB /* libPods-TPPageViewController_Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BDF2C95D5949F068445F7DD /* libPods-TPPageViewController_Tests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +42,7 @@
 
 /* Begin PBXFileReference section */
 		21A152AD26560FEAEF012956 /* Pods-TPPageViewController_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TPPageViewController_Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TPPageViewController_Example/Pods-TPPageViewController_Example.debug.xcconfig"; sourceTree = "<group>"; };
+		2BDF2C95D5949F068445F7DD /* libPods-TPPageViewController_Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TPPageViewController_Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D11CDE020EB9EED00D8B689 /* GreetingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GreetingViewController.m; sourceTree = "<group>"; };
 		3D11CDE120EB9EED00D8B689 /* GreetingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GreetingViewController.h; sourceTree = "<group>"; };
 		3D11CDE220EB9EEE00D8B689 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
@@ -72,11 +73,10 @@
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
-		68DCF888AB9D45B569519462 /* Pods_TPPageViewController_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TPPageViewController_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7806BEF3FB64DB6DAD28062F /* Pods-TPPageViewController_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TPPageViewController_Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-TPPageViewController_Example/Pods-TPPageViewController_Example.release.xcconfig"; sourceTree = "<group>"; };
 		9C5A2ECEFEBE645909333A7D /* Pods-TPPageViewController_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TPPageViewController_Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TPPageViewController_Tests/Pods-TPPageViewController_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		DCCAAA6078F3386A224E5F1B /* Pods_TPPageViewController_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TPPageViewController_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E3D63BF1358FE61D3866161A /* libPods-TPPageViewController_Example.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TPPageViewController_Example.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E966D357CB243088E8981D63 /* Pods-TPPageViewController_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TPPageViewController_Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TPPageViewController_Tests/Pods-TPPageViewController_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		FF473F00265DAA192C70EE5D /* TPPageViewController.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = TPPageViewController.podspec; path = ../TPPageViewController.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 /* End PBXFileReference section */
@@ -89,7 +89,7 @@
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
-				EEF01F34295E6AD3CA25F095 /* Pods_TPPageViewController_Example.framework in Frameworks */,
+				464A293C6B7AFC3E94723CD1 /* libPods-TPPageViewController_Example.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,7 +100,7 @@
 				6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */,
 				6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */,
-				3F22AF23F181795CF0A2D747 /* Pods_TPPageViewController_Tests.framework in Frameworks */,
+				F2F801CCFDCB2E4A85FEB7EB /* libPods-TPPageViewController_Tests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,8 +135,8 @@
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
 				6003F5AF195388D20070C39A /* XCTest.framework */,
-				68DCF888AB9D45B569519462 /* Pods_TPPageViewController_Example.framework */,
-				DCCAAA6078F3386A224E5F1B /* Pods_TPPageViewController_Tests.framework */,
+				E3D63BF1358FE61D3866161A /* libPods-TPPageViewController_Example.a */,
+				2BDF2C95D5949F068445F7DD /* libPods-TPPageViewController_Tests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -227,7 +227,6 @@
 				6003F586195388D20070C39A /* Sources */,
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
-				B424AA23B2DEAFDB03BF2551 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -335,24 +334,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B424AA23B2DEAFDB03BF2551 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-TPPageViewController_Example/Pods-TPPageViewController_Example-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/TPPageViewController/TPPageViewController.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TPPageViewController.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TPPageViewController_Example/Pods-TPPageViewController_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E46FB8924F896B6CD34EEE3A /* [CP] Check Pods Manifest.lock */ = {

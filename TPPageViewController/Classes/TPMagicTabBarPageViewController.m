@@ -58,8 +58,8 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
     self.headerView.frame = self.headerViewRect;
 }
 
-- (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex {
-    [super reloadDataWithSelectedIndex:selectedIndex];
+- (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex shouldCompareIdentifier:(BOOL)shouldCompareIdentifier {
+    [super reloadDataWithSelectedIndex:selectedIndex shouldCompareIdentifier:shouldCompareIdentifier];
     
     self.scrollView.headerViewMinimumHeight = self.headerViewMinimumHeight;
     self.scrollView.headerViewMaximumHeight = self.headerViewMaximumHeight;

@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIViewController (TPTabBarPageViewController)
 
-@property (nonatomic, readonly) NSNumber *tp_pageIndex;
+@property (nullable, nonatomic, readonly) NSNumber *tp_pageIndex;
 
 @end
 
@@ -25,10 +25,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) id<TPTabBarPageViewControllerDataSource> dataSource;
 @property (nonatomic, weak) id<TPTabBarPageViewControllerDelegate> delegate;
 
-@property (nonatomic, assign) NSUInteger defaultSelectedIndex;
+@property (nullable, nonatomic, copy) NSNumber *defaultSelectedPageIndex;
 
-@property (nonatomic, assign) NSUInteger selectedIndex;
+@property (nullable, nonatomic, readonly) NSNumber *selectedPageIndex;
 @property (nullable, nonatomic, readonly) __kindof UIViewController *selectedViewController;
+
+@property (nonatomic, assign, readonly) NSUInteger numberOfViewControllers;
 
 @property (nonatomic, readonly) CGFloat tabBarHeight;
 
@@ -38,7 +40,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (UIViewController *)viewControllerAtIndex:(NSUInteger)index;
 
-- (void)setSelectedIndex:(NSUInteger)selectedIndex animated:(BOOL)animated;
+- (void)selectPageAtIndex:(NSUInteger)index animated:(BOOL)animated;
+
+- (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex shouldCompareIdentifier:(BOOL)shouldCompareIdentifier;
 
 - (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex;
 
@@ -53,6 +57,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (__kindof UIViewController *)pageViewController:(TPTabBarPageViewController *)pageViewController viewControllerAtIndex:(NSUInteger)index;
 
 @optional
+
+- (nullable NSString *)pageViewController:(TPTabBarPageViewController *)pageViewController identifierForViewControllerAtIndex:(NSUInteger)index;
 
 - (nullable __kindof UIView *)tabBarInPageViewController:(TPTabBarPageViewController *)pageViewController;
 

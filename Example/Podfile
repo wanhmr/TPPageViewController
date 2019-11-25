@@ -1,4 +1,4 @@
-use_frameworks!
+# use_frameworks!
 
 target 'TPPageViewController_Example' do
   pod 'TPPageViewController', :path => '../'

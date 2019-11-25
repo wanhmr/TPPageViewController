@@ -10,6 +10,10 @@
 #import <objc/runtime.h>
 #import "TPPageViewController.h"
 
+static NSString *TPKeyFromIndex(NSUInteger index) {
+    return @(index).stringValue;
+}
+
 @implementation UIViewController (TPTabBarPageViewController)
 
 - (NSNumber *)tp_pageIndex {
@@ -37,7 +41,8 @@
 
 @property (nonatomic, strong) TPPageViewController *pageViewController;
 @property (nonatomic, assign) NSUInteger numberOfViewControllers;
-@property (nonatomic, strong) NSCache<NSNumber *, UIViewController *> *viewControllerCache;
+@property (nonatomic, strong) NSCache<NSString *, UIViewController *> *viewControllerCache;
+@property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *viewControllerIdentifiers;
 
 @property (nonatomic, strong) UIView *tabBar;
 
@@ -64,8 +69,13 @@
     self.pageViewController = pageViewController;
     
     self.viewControllerCache = [NSCache new];
+    self.viewControllerIdentifiers = [NSMutableDictionary new];
     
-    [self reloadDataWithSelectedIndex:self.defaultSelectedIndex];
+    NSUInteger defaultSelectedIndex = 0;
+    if (self.defaultSelectedPageIndex) {
+        defaultSelectedIndex = self.defaultSelectedPageIndex.unsignedIntegerValue;
+    }
+    [self reloadDataWithSelectedIndex:defaultSelectedIndex];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -74,29 +84,29 @@
     self.pageViewController.view.frame = self.pageContentRect;
 }
 
-- (void)setSelectedIndex:(NSUInteger)selectedIndex animated:(BOOL)animated {
-    if (selectedIndex >= self.numberOfViewControllers) {
+- (void)selectPageAtIndex:(NSUInteger)index animated:(BOOL)animated {
+    if (index >= self.numberOfViewControllers) {
         NSAssert(NO, @"The selectedIndex is invalid.");
         return;
     }
     
-    NSUInteger currentSelectedIndex = self.selectedIndex;
-    if (self.selectedViewController && selectedIndex == currentSelectedIndex) {
+    NSUInteger currentSelectedIndex = self.selectedPageIndex.unsignedIntegerValue;
+    if (self.selectedPageIndex && index == currentSelectedIndex) {
         return;
     }
-    
+
     TPPageViewControllerNavigationDirection direction = TPPageViewControllerNavigationDirectionForward;
-    if (selectedIndex < currentSelectedIndex) {
+    if (index < currentSelectedIndex) {
         direction = TPPageViewControllerNavigationDirectionReverse;
     }
-    
-    [self.pageViewController selectViewController:[self viewControllerAtIndex:selectedIndex]
+
+    [self.pageViewController selectViewController:[self viewControllerAtIndex:index]
                                         direction:direction
                                          animated:animated
                                        completion:nil];
 }
 
-- (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex {
+- (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex shouldCompareIdentifier:(BOOL)shouldCompareIdentifier {
     [self.viewControllerCache removeAllObjects];
     
     self.numberOfViewControllers = [self.dataSource numberOfViewControllersInPageViewController:self];
@@ -110,24 +120,49 @@
         [self.view addSubview:self.tabBar];
     }
     
+    NSDictionary *viewControllerIdentifiers = self.viewControllerIdentifiers.copy;
+    [self.viewControllerIdentifiers removeAllObjects];
+    
+    if ([self.dataSource respondsToSelector:@selector(pageViewController:identifierForViewControllerAtIndex:)]) {
+        for (NSUInteger i = 0; i < self.numberOfViewControllers; i++) {
+            self.viewControllerIdentifiers[TPKeyFromIndex(i)] = [self.dataSource pageViewController:self identifierForViewControllerAtIndex:i];
+        }
+        
+        if (shouldCompareIdentifier) {
+            NSNumber *currentSelectedPageIndex = self.selectedPageIndex;
+               if (currentSelectedPageIndex) {
+                   NSString *beforeIdentifier = viewControllerIdentifiers[TPKeyFromIndex(currentSelectedPageIndex.unsignedIntegerValue)];
+                   NSString *afterIdentifier = self.viewControllerIdentifiers[TPKeyFromIndex(selectedIndex)];
+                   if (afterIdentifier && [afterIdentifier isEqualToString:beforeIdentifier]) {
+                       [self.selectedViewController tp_setPageIndex:@(selectedIndex)];
+                       [self.viewControllerCache setObject:self.selectedViewController forKey:TPKeyFromIndex(selectedIndex)];
+                   }
+               }
+           }
+    }
+    
     if (self.numberOfViewControllers > 0) {
-        [self setSelectedIndex:selectedIndex animated:NO];
+        [self selectPageAtIndex:selectedIndex animated:NO];
     }
 }
 
+- (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex {
+    [self reloadDataWithSelectedIndex:selectedIndex shouldCompareIdentifier:YES];
+}
+
 - (void)reloadData {
-    [self reloadDataWithSelectedIndex:self.selectedIndex];
+    [self reloadDataWithSelectedIndex:self.selectedPageIndex.unsignedIntegerValue];
 }
 
 - (UIViewController *)viewControllerAtIndex:(NSUInteger)index {
     NSParameterAssert(index < self.numberOfViewControllers);
     
-    NSNumber *indexNumber = @(index);
-    UIViewController *viewController = [self.viewControllerCache objectForKey:indexNumber];
+    NSString *key = TPKeyFromIndex(index);
+    UIViewController *viewController = [self.viewControllerCache objectForKey:key];
     if (!viewController) {
         viewController = [self.dataSource pageViewController:self viewControllerAtIndex:index];
-        [viewController tp_setPageIndex:indexNumber];
-        [self.viewControllerCache setObject:viewController forKey:indexNumber];
+        [viewController tp_setPageIndex:@(index)];
+        [self.viewControllerCache setObject:viewController forKey:key];
     }
     
     return viewController;
@@ -135,13 +170,8 @@
 
 #pragma mark - Accessors
 
-- (void)setSelectedIndex:(NSUInteger)selectedIndex {
-    [self setSelectedIndex:selectedIndex animated:NO];
-}
-
-- (NSUInteger)selectedIndex {
-    NSNumber *index = self.selectedViewController.tp_pageIndex;
-    return index ? index.unsignedIntegerValue : 0;
+- (NSNumber *)selectedPageIndex {
+    return self.selectedViewController.tp_pageIndex;
 }
 
 - (UIViewController *)selectedViewController {

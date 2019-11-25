@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "GreetingViewController.h"
-@import TPPageViewController;
+#import <TPPageViewController.h>
 
 @interface RootViewController : UIViewController<TPPageViewControllerDelegate, TPPageViewControllerDataSource>
 
