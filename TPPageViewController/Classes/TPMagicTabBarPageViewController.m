@@ -109,21 +109,6 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
     }
 }
 
-#pragma mark - WMMagicScrollViewDelegate
-
-- (BOOL)scrollView:(WMMagicScrollView *)scrollView shouldScrollWithSubview:(UIScrollView *)subview {
-    UIViewController *viewController = TPViewControllerFromView(subview);
-    if (![viewController conformsToProtocol:@protocol(TPPageContentProtocol)]) {
-        return NO;
-    }
-    
-    return [(id<TPPageContentProtocol>)viewController preferredContentScrollView] == subview;
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    [self updateHeaderViewVisiableProgressIfNeeded];
-}
-
 #pragma mark - Accessors
 
 - (WMMagicScrollView *)scrollView {
@@ -162,6 +147,25 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
     CGRect pageContentRect = [super pageContentRect];
     pageContentRect.size.height += self.scrollView.maximumContentOffsetY;
     return pageContentRect;
+}
+
+@end
+
+@implementation TPMagicTabBarPageViewController (UIScrollViewDelegate)
+
+#pragma mark - WMMagicScrollViewDelegate
+
+- (BOOL)scrollView:(WMMagicScrollView *)scrollView shouldScrollWithSubview:(UIScrollView *)subview {
+    UIViewController *viewController = TPViewControllerFromView(subview);
+    if (![viewController conformsToProtocol:@protocol(TPPageContentProtocol)]) {
+        return NO;
+    }
+    
+    return [(id<TPPageContentProtocol>)viewController preferredContentScrollView] == subview;
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [self updateHeaderViewVisiableProgressIfNeeded];
 }
 
 @end

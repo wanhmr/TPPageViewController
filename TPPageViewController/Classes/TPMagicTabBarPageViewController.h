@@ -42,7 +42,7 @@ typedef NS_ENUM(NSInteger, TPMagicTabBarPageViewControllerHeaderViewPosition) {
 
 @end
 
-@interface TPMagicTabBarPageViewController : TPTabBarPageViewController <UIScrollViewDelegate>
+@interface TPMagicTabBarPageViewController : TPTabBarPageViewController
 
 @property (nonatomic, weak) id<TPMagicTabBarPageViewControllerDataSource> dataSource;
 @property (nonatomic, weak) id<TPMagicTabBarPageViewControllerDelegate> delegate;
@@ -53,6 +53,12 @@ typedef NS_ENUM(NSInteger, TPMagicTabBarPageViewControllerHeaderViewPosition) {
 
 - (void)scrollToHeaderViewPosition:(TPMagicTabBarPageViewControllerHeaderViewPosition)headerViewPosition
                           animated:(BOOL)animated;
+
+@end
+
+@interface TPMagicTabBarPageViewController (UIScrollViewDelegate) <UIScrollViewDelegate>
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 
 @end
 
