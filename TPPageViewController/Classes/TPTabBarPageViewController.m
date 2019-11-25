@@ -106,7 +106,7 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
                                        completion:nil];
 }
 
-- (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex shouldCompareIdentifier:(BOOL)shouldCompareIdentifier {
+- (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex shouldMatchIdentifier:(BOOL)shouldMatchIdentifier {
     [self.viewControllerCache removeAllObjects];
     
     self.numberOfViewControllers = [self.dataSource numberOfViewControllersInPageViewController:self];
@@ -128,14 +128,19 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
             self.viewControllerIdentifiers[TPKeyFromIndex(i)] = [self.dataSource pageViewController:self identifierForViewControllerAtIndex:i];
         }
         
-        if (shouldCompareIdentifier) {
+        if (shouldMatchIdentifier) {
             NSNumber *currentSelectedPageIndex = self.selectedPageIndex;
                if (currentSelectedPageIndex) {
-                   NSString *beforeIdentifier = viewControllerIdentifiers[TPKeyFromIndex(currentSelectedPageIndex.unsignedIntegerValue)];
+                   NSUInteger beforeIndex = currentSelectedPageIndex.unsignedIntegerValue;
+                   NSString *beforeIdentifier = viewControllerIdentifiers[TPKeyFromIndex(beforeIndex)];
                    NSString *afterIdentifier = self.viewControllerIdentifiers[TPKeyFromIndex(selectedIndex)];
                    if (afterIdentifier && [afterIdentifier isEqualToString:beforeIdentifier]) {
                        [self.selectedViewController tp_setPageIndex:@(selectedIndex)];
                        [self.viewControllerCache setObject:self.selectedViewController forKey:TPKeyFromIndex(selectedIndex)];
+                       
+                       if ([self.delegate respondsToSelector:@selector(pageViewController:didMatchIdentifier:beforeIndex:afterIndex:)]) {
+                           [self.delegate pageViewController:self didMatchIdentifier:afterIdentifier beforeIndex:beforeIndex afterIndex:selectedIndex];
+                       }
                    }
                }
            }
@@ -147,7 +152,7 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
 }
 
 - (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex {
-    [self reloadDataWithSelectedIndex:selectedIndex shouldCompareIdentifier:YES];
+    [self reloadDataWithSelectedIndex:selectedIndex shouldMatchIdentifier:YES];
 }
 
 - (void)reloadData {

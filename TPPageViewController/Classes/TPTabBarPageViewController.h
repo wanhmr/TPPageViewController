@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)selectPageAtIndex:(NSUInteger)index animated:(BOOL)animated;
 
-- (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex shouldCompareIdentifier:(BOOL)shouldCompareIdentifier;
+- (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex shouldMatchIdentifier:(BOOL)shouldMatchIdentifier;
 
 - (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex;
 
@@ -69,6 +69,8 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 
 - (CGFloat)heightForTabBarInPageViewController:(TPTabBarPageViewController *)pageViewController;
+
+- (void)pageViewController:(TPTabBarPageViewController *)pageViewController didMatchIdentifier:(NSString *)identifier beforeIndex:(NSUInteger)beforeIndex afterIndex:(NSUInteger)afterIndex;
 
 - (void)pageViewController:(TPTabBarPageViewController *)pageViewController willStartScrollingFromViewController:(__kindof UIViewController *)startingViewController destinationViewController:(__kindof UIViewController *)destinationViewController;
 
