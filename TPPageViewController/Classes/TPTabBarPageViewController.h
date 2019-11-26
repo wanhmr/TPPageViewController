@@ -25,8 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) id<TPTabBarPageViewControllerDataSource> dataSource;
 @property (nonatomic, weak) id<TPTabBarPageViewControllerDelegate> delegate;
 
-/// default 0
-@property (nonatomic, assign) NSInteger defaultSelectedIndex;
+@property (nonatomic, assign) NSUInteger defaultSelectedIndex;
 
 @property (nullable, nonatomic, readonly) NSNumber *selectedPageIndex;
 @property (nullable, nonatomic, readonly) __kindof UIViewController *selectedViewController;
