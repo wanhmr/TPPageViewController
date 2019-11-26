@@ -94,17 +94,7 @@
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
     
-    if (!CGRectEqualToRect(self.scrollView.frame, self.view.bounds)) {
-        self.adjustingContentOffset = YES;
-        self.scrollView.frame = self.view.bounds;
-        if (self.isOrientationHorizontal) {
-            self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.view.bounds) * 3, CGRectGetHeight(self.view.bounds));
-        } else {
-            self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) * 3);
-        }
-        self.adjustingContentOffset = NO;
-    }
-    
+    [self adjustScrollView];
     [self layoutViews];
 }
 
@@ -129,14 +119,22 @@
                    direction:(TPPageViewControllerNavigationDirection)direction
                     animated:(BOOL)animated
                   completion:(TPPageViewControllerTransitionCompletionHandler)completion {
+    if (self.selectedViewController == viewController) {
+        [self cancelScrollingIfNeeded];
+        [self loadBeforeViewControllerForShowingViewController:viewController];
+        [self loadAfterViewControllerForShowingViewController:viewController];
+        if (completion) {
+            completion(YES);
+        }
+        return;
+    }
+    
     if (direction == TPPageViewControllerNavigationDirectionForward) {
         self.afterViewController = viewController;
-        [self layoutViews];
         self.loadNewAdjoiningViewControllersOnFinish = YES;
         [self scrollForwardWithAnimated:animated completion:completion];
     } else if (direction == TPPageViewControllerNavigationDirectionReverse) {
         self.beforeViewController = viewController;
-        [self layoutViews];
         self.loadNewAdjoiningViewControllersOnFinish = YES;
         [self scrollReverseWithAnimated:animated completion:completion];
     }
@@ -203,15 +201,9 @@
         return;
     }
     
-    if (self.navigationDirection == TPPageViewControllerNavigationDirectionForward) {
-        if (self.isOrientationHorizontal) {
-            [self.scrollView setContentOffset:CGPointMake(CGRectGetWidth(self.view.bounds) * 2, 0) animated:NO];
-        } else {
-            [self.scrollView setContentOffset:CGPointMake(0, CGRectGetHeight(self.view.bounds) * 2) animated:NO];
-        }
-    } else if (self.navigationDirection == TPPageViewControllerNavigationDirectionReverse) {
-        [self.scrollView setContentOffset:CGPointZero animated:NO];
-    }
+    CGFloat const viewWidth = CGRectGetWidth(self.view.bounds);
+    CGFloat const viewHeight = CGRectGetHeight(self.view.bounds);
+    self.scrollView.contentOffset = CGPointMake(self.isOrientationHorizontal ? viewWidth : 0, self.isOrientationHorizontal ? 0 : viewHeight);
 }
 
 - (void)performCompletionHanderIfNeeded:(BOOL)completed {
@@ -221,7 +213,9 @@
     }
 }
 
-- (void)layoutViews {
+- (void)adjustScrollView {
+    UIScrollView *scrollView = self.scrollView;
+    
     CGFloat const viewWidth = CGRectGetWidth(self.view.bounds);
     CGFloat const viewHeight = CGRectGetHeight(self.view.bounds);
     
@@ -237,13 +231,26 @@
     }
     
     self.adjustingContentOffset = YES;
-    self.scrollView.contentOffset = CGPointMake(self.isOrientationHorizontal ? viewWidth : 0, self.isOrientationHorizontal ? 0 : viewHeight);
+    if (!CGRectEqualToRect(scrollView.frame, self.view.bounds)) {
+        scrollView.frame = self.view.bounds;
+        if (self.isOrientationHorizontal) {
+            scrollView.contentSize = CGSizeMake(viewWidth * 3, viewHeight);
+        } else {
+            scrollView.contentSize = CGSizeMake(viewWidth, viewHeight * 3);
+        }
+    }
+    scrollView.contentOffset = CGPointMake(self.isOrientationHorizontal ? viewWidth : 0, self.isOrientationHorizontal ? 0 : viewHeight);
     if (self.isOrientationHorizontal) {
-        self.scrollView.contentInset = UIEdgeInsetsMake(0, beforeInset, 0, afterInset);
+        scrollView.contentInset = UIEdgeInsetsMake(0, beforeInset, 0, afterInset);
     } else {
-        self.scrollView.contentInset = UIEdgeInsetsMake(beforeInset, 0, afterInset, 0);
+        scrollView.contentInset = UIEdgeInsetsMake(beforeInset, 0, afterInset, 0);
     }
     self.adjustingContentOffset = NO;
+}
+
+- (void)layoutViews {
+    CGFloat const viewWidth = CGRectGetWidth(self.view.bounds);
+    CGFloat const viewHeight = CGRectGetHeight(self.view.bounds);
     
     CGRect beforeViewControllerFrame;
     CGRect selectedViewControllerFrame;
@@ -424,6 +431,7 @@
 
 - (void)didFinishScrollingWithShowingViewController:(UIViewController *)showingViewController {
     [self updateViewControllersWithShowingViewController:showingViewController];
+    [self adjustScrollView];
     [self layoutViews];
 }
 
@@ -436,7 +444,6 @@
     
     CGFloat distance = self.isOrientationHorizontal ? CGRectGetWidth(self.view.bounds) : CGRectGetHeight(self.view.bounds);
     CGFloat progress = ((self.isOrientationHorizontal ? scrollView.contentOffset.x : scrollView.contentOffset.y) - distance) / distance;
-    
     if (progress > FLT_EPSILON) { // Scrolling forward / after
         if (self.afterViewController != nil) {
             if (![self.afterViewController isViewLoaded]) {
