@@ -95,7 +95,7 @@
     [super viewWillLayoutSubviews];
     
     [self adjustScrollView];
-    [self layoutViews];
+    [self layoutPageViews];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -248,7 +248,7 @@
     self.adjustingContentOffset = NO;
 }
 
-- (void)layoutViews {
+- (void)layoutPageViews {
     CGFloat const viewWidth = CGRectGetWidth(self.view.bounds);
     CGFloat const viewHeight = CGRectGetHeight(self.view.bounds);
     
@@ -432,7 +432,7 @@
 - (void)didFinishScrollingWithShowingViewController:(UIViewController *)showingViewController {
     [self updateViewControllersWithShowingViewController:showingViewController];
     [self adjustScrollView];
-    [self layoutViews];
+    [self layoutPageViews];
 }
 
 #pragma mark - UIScrollViewDelegate
@@ -448,7 +448,7 @@
         if (self.afterViewController != nil) {
             if (![self.afterViewController isViewLoaded]) {
                 [self.afterViewController view];
-                [self layoutViews];
+                [self layoutPageViews];
             }
             
             if (!self.isScrolling) { // call willScroll once
@@ -474,7 +474,7 @@
         if (self.beforeViewController != nil) {
             if (![self.beforeViewController isViewLoaded]) {
                 [self.beforeViewController view];
-                [self layoutViews];
+                [self layoutPageViews];
             }
             
             if (!self.isScrolling) { // call willScroll once
