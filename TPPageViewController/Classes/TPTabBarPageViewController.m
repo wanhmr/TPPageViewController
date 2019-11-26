@@ -8,6 +8,7 @@
 
 #import "TPTabBarPageViewController.h"
 #import <objc/runtime.h>
+
 #import "TPPageViewController.h"
 
 static NSString *TPKeyFromIndex(NSUInteger index) {
@@ -23,8 +24,9 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
 - (void)tp_setPageIndex:(NSNumber *)pageIndex {
     objc_setAssociatedObject(self, @selector(tp_pageIndex), pageIndex, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
-
+ 
 @end
+
 
 @interface TPTabBarPageViewModel : NSObject <
     TPPageViewControllerDataSource,
@@ -41,7 +43,8 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
 
 @property (nonatomic, strong) TPPageViewController *pageViewController;
 @property (nonatomic, assign) NSUInteger numberOfViewControllers;
-@property (nonatomic, strong) NSCache<NSString *, UIViewController *> *viewControllerCache;
+@property (nonatomic, strong) NSCache<NSString *, UIViewController *> *viewControllersCache;
+@property (nonatomic, strong) NSMutableArray *viewControllerIdentifiers;
 
 @property (nonatomic, strong) UIView *tabBar;
 
@@ -67,13 +70,10 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
     [pageViewController didMoveToParentViewController:self];
     self.pageViewController = pageViewController;
     
-    self.viewControllerCache = [NSCache new];
+    self.viewControllersCache = [NSCache new];
+    self.viewControllerIdentifiers = [NSMutableArray new];
     
-    NSUInteger defaultSelectedIndex = 0;
-    if (self.defaultSelectedPageIndex) {
-        defaultSelectedIndex = self.defaultSelectedPageIndex.unsignedIntegerValue;
-    }
-    [self reloadDataWithSelectedIndex:defaultSelectedIndex];
+    [self reloadDataWithSelectedIndex:self.defaultSelectedIndex];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -82,6 +82,8 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
     self.pageViewController.view.frame = self.pageContentRect;
 }
 
+#pragma mark - Public
+
 - (void)selectPageAtIndex:(NSUInteger)index animated:(BOOL)animated {
     if (index >= self.numberOfViewControllers) {
         NSAssert(NO, @"The selectedIndex is invalid.");
@@ -89,15 +91,12 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
     }
     
     NSUInteger currentSelectedIndex = self.selectedPageIndex.unsignedIntegerValue;
-    if (self.selectedPageIndex && index == currentSelectedIndex) {
-        return;
-    }
 
     TPPageViewControllerNavigationDirection direction = TPPageViewControllerNavigationDirectionForward;
     if (index < currentSelectedIndex) {
         direction = TPPageViewControllerNavigationDirectionReverse;
     }
-
+    
     [self.pageViewController selectViewController:[self viewControllerAtIndex:index]
                                         direction:direction
                                          animated:animated
@@ -105,9 +104,29 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
 }
 
 - (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex {
-    [self.viewControllerCache removeAllObjects];
-    
     self.numberOfViewControllers = [self.dataSource numberOfViewControllersInPageViewController:self];
+    
+    [self.viewControllerIdentifiers removeAllObjects];
+    if ([self.dataSource respondsToSelector:@selector(pageViewController:identifierForViewControllerAtIndex:)]) {
+        for (NSUInteger i = 0; i < self.numberOfViewControllers; i++) {
+            NSString *identifier = [self.dataSource pageViewController:self identifierForViewControllerAtIndex:i];
+            if (identifier.length == 0 ||
+                [self.viewControllerIdentifiers containsObject:identifier]) {
+                break;
+            } else {
+                [self.viewControllerIdentifiers addObject:identifier];
+            }
+        }
+    }
+    if (self.viewControllerIdentifiers.count != self.numberOfViewControllers) {
+        // Remove all cache if identifiers is invalid.
+        [self.viewControllersCache removeAllObjects];
+        
+        for (NSUInteger i = 0; i < self.numberOfViewControllers; i++) {
+            NSString *identifier = TPKeyFromIndex(i);
+            [self.viewControllerIdentifiers addObject:identifier];
+        }
+    }
     
     if (self.tabBar.superview) {
         [self.tabBar removeFromSuperview];
@@ -130,21 +149,24 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
 - (UIViewController *)viewControllerAtIndex:(NSUInteger)index {
     NSParameterAssert(index < self.numberOfViewControllers);
     
-    NSString *key = TPKeyFromIndex(index);
-    UIViewController *viewController = [self.viewControllerCache objectForKey:key];
+    NSString *key = self.viewControllerIdentifiers[index];
+    UIViewController *viewController = [self.viewControllersCache objectForKey:key];
     if (!viewController) {
         viewController = [self.dataSource pageViewController:self viewControllerAtIndex:index];
-        [viewController tp_setPageIndex:@(index)];
-        [self.viewControllerCache setObject:viewController forKey:key];
+        [self.viewControllersCache setObject:viewController forKey:key];
     }
-    
+    [viewController tp_setPageIndex:@(index)];
     return viewController;
+}
+
+- (void)invalidateViewControllersCache {
+    [self.viewControllersCache removeAllObjects];
 }
 
 #pragma mark - Accessors
 
 - (NSNumber *)selectedPageIndex {
-    return self.selectedViewController.tp_pageIndex;
+    return self.pageViewController.selectedViewController.tp_pageIndex;
 }
 
 - (UIViewController *)selectedViewController {

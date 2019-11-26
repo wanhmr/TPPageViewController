@@ -25,7 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) id<TPTabBarPageViewControllerDataSource> dataSource;
 @property (nonatomic, weak) id<TPTabBarPageViewControllerDelegate> delegate;
 
-@property (nullable, nonatomic, copy) NSNumber *defaultSelectedPageIndex;
+/// default 0
+@property (nonatomic, assign) NSInteger defaultSelectedIndex;
 
 @property (nullable, nonatomic, readonly) NSNumber *selectedPageIndex;
 @property (nullable, nonatomic, readonly) __kindof UIViewController *selectedViewController;
@@ -48,6 +49,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)reloadData;
 
+- (void)invalidateViewControllersCache;
+
 @end
 
 @protocol TPTabBarPageViewControllerDataSource <NSObject>
@@ -57,6 +60,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (__kindof UIViewController *)pageViewController:(TPTabBarPageViewController *)pageViewController viewControllerAtIndex:(NSUInteger)index;
 
 @optional
+
+- (NSString *)pageViewController:(TPTabBarPageViewController *)pageViewController identifierForViewControllerAtIndex:(NSUInteger)index;
 
 - (nullable __kindof UIView *)tabBarInPageViewController:(TPTabBarPageViewController *)pageViewController;
 
