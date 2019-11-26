@@ -399,11 +399,10 @@
             [self.delegate pageViewController:self willStartScrollingFromViewController:startingViewController destinationViewController:destinationViewController];
         }
     }
-    
-    [self addChildIfNeeded:destinationViewController];
 
     [startingViewController beginAppearanceTransition:NO animated:self.transitionAnimated];
     [destinationViewController beginAppearanceTransition:YES animated:self.transitionAnimated];
+    [self addChildIfNeeded:destinationViewController];
 }
 
 - (void)didFinishScrollingWithShowingViewController:(UIViewController *)showingViewController {

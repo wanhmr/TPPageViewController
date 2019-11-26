@@ -44,8 +44,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)selectPageAtIndex:(NSUInteger)index animated:(BOOL)animated;
 
-- (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex shouldMatchIdentifier:(BOOL)shouldMatchIdentifier;
-
 - (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex;
 
 - (void)reloadData;
@@ -59,8 +57,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (__kindof UIViewController *)pageViewController:(TPTabBarPageViewController *)pageViewController viewControllerAtIndex:(NSUInteger)index;
 
 @optional
-
-- (nullable NSString *)pageViewController:(TPTabBarPageViewController *)pageViewController identifierForViewControllerAtIndex:(NSUInteger)index;
 
 - (nullable __kindof UIView *)tabBarInPageViewController:(TPTabBarPageViewController *)pageViewController;
 

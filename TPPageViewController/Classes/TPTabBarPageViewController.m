@@ -42,7 +42,6 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
 @property (nonatomic, strong) TPPageViewController *pageViewController;
 @property (nonatomic, assign) NSUInteger numberOfViewControllers;
 @property (nonatomic, strong) NSCache<NSString *, UIViewController *> *viewControllerCache;
-@property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *viewControllerIdentifiers;
 
 @property (nonatomic, strong) UIView *tabBar;
 
@@ -69,7 +68,6 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
     self.pageViewController = pageViewController;
     
     self.viewControllerCache = [NSCache new];
-    self.viewControllerIdentifiers = [NSMutableDictionary new];
     
     NSUInteger defaultSelectedIndex = 0;
     if (self.defaultSelectedPageIndex) {
@@ -106,7 +104,7 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
                                        completion:nil];
 }
 
-- (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex shouldMatchIdentifier:(BOOL)shouldMatchIdentifier {
+- (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex {
     [self.viewControllerCache removeAllObjects];
     
     self.numberOfViewControllers = [self.dataSource numberOfViewControllersInPageViewController:self];
@@ -120,39 +118,9 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
         [self.view addSubview:self.tabBar];
     }
     
-    NSDictionary *viewControllerIdentifiers = self.viewControllerIdentifiers.copy;
-    [self.viewControllerIdentifiers removeAllObjects];
-    
-    if ([self.dataSource respondsToSelector:@selector(pageViewController:identifierForViewControllerAtIndex:)]) {
-        for (NSUInteger i = 0; i < self.numberOfViewControllers; i++) {
-            self.viewControllerIdentifiers[TPKeyFromIndex(i)] = [self.dataSource pageViewController:self identifierForViewControllerAtIndex:i];
-        }
-        
-        if (shouldMatchIdentifier) {
-            NSNumber *currentSelectedPageIndex = self.selectedPageIndex;
-               if (currentSelectedPageIndex) {
-                   NSUInteger beforeIndex = currentSelectedPageIndex.unsignedIntegerValue;
-                   NSString *beforeIdentifier = viewControllerIdentifiers[TPKeyFromIndex(beforeIndex)];
-                   NSString *afterIdentifier = self.viewControllerIdentifiers[TPKeyFromIndex(selectedIndex)];
-                   if (afterIdentifier && [afterIdentifier isEqualToString:beforeIdentifier]) {
-                       [self.selectedViewController tp_setPageIndex:@(selectedIndex)];
-                       [self.viewControllerCache setObject:self.selectedViewController forKey:TPKeyFromIndex(selectedIndex)];
-                       
-                       if ([self.delegate respondsToSelector:@selector(pageViewController:didMatchIdentifier:beforeIndex:afterIndex:)]) {
-                           [self.delegate pageViewController:self didMatchIdentifier:afterIdentifier beforeIndex:beforeIndex afterIndex:selectedIndex];
-                       }
-                   }
-               }
-           }
-    }
-    
     if (self.numberOfViewControllers > 0) {
         [self selectPageAtIndex:selectedIndex animated:NO];
     }
-}
-
-- (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex {
-    [self reloadDataWithSelectedIndex:selectedIndex shouldMatchIdentifier:YES];
 }
 
 - (void)reloadData {
