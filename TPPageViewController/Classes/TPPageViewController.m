@@ -73,7 +73,9 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self.selectedViewController endAppearanceTransition];
+    if (self.isViewAppearingValue && self.isViewAppearingValue.boolValue) {
+        [self.selectedViewController endAppearanceTransition];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -84,7 +86,9 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [self.selectedViewController endAppearanceTransition];
+    if (self.isViewAppearingValue && !self.isViewAppearingValue.boolValue) {
+        [self.selectedViewController endAppearanceTransition];
+    }
 }
 
 - (void)viewWillLayoutSubviews {
@@ -241,14 +245,27 @@
     }
     self.adjustingContentOffset = NO;
     
+    CGRect beforeViewControllerFrame;
+    CGRect selectedViewControllerFrame;
+    CGRect afterViewControllerFrame;
     if (self.isOrientationHorizontal) {
-        self.beforeViewController.view.frame = CGRectMake(0, 0, viewWidth, viewHeight);
-        self.selectedViewController.view.frame = CGRectMake(viewWidth, 0, viewWidth, viewHeight);
-        self.afterViewController.view.frame = CGRectMake(viewWidth * 2, 0, viewWidth, viewHeight);
+        beforeViewControllerFrame = CGRectMake(0, 0, viewWidth, viewHeight);
+        selectedViewControllerFrame = CGRectMake(viewWidth, 0, viewWidth, viewHeight);
+        afterViewControllerFrame = CGRectMake(viewWidth * 2, 0, viewWidth, viewHeight);
     } else {
-        self.beforeViewController.view.frame = CGRectMake(0, 0, viewWidth, viewHeight);
-        self.selectedViewController.view.frame = CGRectMake(0, viewHeight, viewWidth, viewHeight);
-        self.afterViewController.view.frame = CGRectMake(0, viewHeight * 2, viewWidth, viewHeight);
+        beforeViewControllerFrame = CGRectMake(0, 0, viewWidth, viewHeight);
+        selectedViewControllerFrame = CGRectMake(0, viewHeight, viewWidth, viewHeight);
+        afterViewControllerFrame = CGRectMake(0, viewHeight * 2, viewWidth, viewHeight);
+    }
+    
+    if ([self.beforeViewController isViewLoaded]) {
+        self.beforeViewController.view.frame = beforeViewControllerFrame;
+    }
+    if ([self.selectedViewController isViewLoaded]) {
+        self.selectedViewController.view.frame = selectedViewControllerFrame;
+    }
+    if ([self.afterViewController isViewLoaded]) {
+        self.afterViewController.view.frame = afterViewControllerFrame;
     }
 }
 
@@ -422,6 +439,11 @@
     
     if (progress > FLT_EPSILON) { // Scrolling forward / after
         if (self.afterViewController != nil) {
+            if (![self.afterViewController isViewLoaded]) {
+                [self.afterViewController view];
+                [self layoutViews];
+            }
+            
             if (!self.isScrolling) { // call willScroll once
                 [self willScrollFromViewController:self.selectedViewController toViewController:self.afterViewController];
                 self.scrolling = YES;
@@ -441,8 +463,13 @@
                                                    progress:progress];
             }
         }
-    } else if (progress < FLT_EPSILON) {
+    } else if (progress < -FLT_EPSILON) {
         if (self.beforeViewController != nil) {
+            if (![self.beforeViewController isViewLoaded]) {
+                [self.beforeViewController view];
+                [self layoutViews];
+            }
+            
             if (!self.isScrolling) { // call willScroll once
                 [self willScrollFromViewController:self.selectedViewController toViewController:self.beforeViewController];
                 self.scrolling = YES;
