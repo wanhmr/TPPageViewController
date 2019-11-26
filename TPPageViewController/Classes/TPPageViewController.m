@@ -132,10 +132,12 @@
     if (direction == TPPageViewControllerNavigationDirectionForward) {
         self.afterViewController = viewController;
         self.loadNewAdjoiningViewControllersOnFinish = YES;
+        [self layoutPageViews];
         [self scrollForwardWithAnimated:animated completion:completion];
     } else if (direction == TPPageViewControllerNavigationDirectionReverse) {
         self.beforeViewController = viewController;
         self.loadNewAdjoiningViewControllersOnFinish = YES;
+        [self layoutPageViews];
         [self scrollReverseWithAnimated:animated completion:completion];
     }
 }
