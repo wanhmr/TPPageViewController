@@ -44,7 +44,7 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
 @property (nonatomic, strong) TPPageViewController *pageViewController;
 @property (nonatomic, assign) NSUInteger numberOfViewControllers;
 @property (nonatomic, strong) NSCache<NSString *, UIViewController *> *viewControllersCache;
-@property (nonatomic, strong) NSMutableArray *viewControllerIdentifiers;
+@property (nonatomic, strong) NSMutableArray<NSString *> *viewControllerIdentifiers;
 
 @property (nonatomic, strong) UIView *tabBar;
 
@@ -166,7 +166,7 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
 #pragma mark - Accessors
 
 - (NSNumber *)selectedPageIndex {
-    return self.pageViewController.selectedViewController.tp_pageIndex;
+    return self.selectedViewController.tp_pageIndex;
 }
 
 - (UIViewController *)selectedViewController {
