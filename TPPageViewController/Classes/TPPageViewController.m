@@ -29,7 +29,7 @@
 
 @property (nonatomic, copy) TPPageViewControllerTransitionCompletionHandler didFinishScrollingCompletionHandler;
 
-@property (nonatomic, copy) NSNumber *isViewAppearingValue;
+@property (nonatomic, assign) BOOL canAppearanceTransition;
 
 @end
 
@@ -65,30 +65,25 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (self.isViewAppearingValue && !self.isViewAppearingValue.boolValue) {
-        self.isViewAppearingValue = @YES;
-        [self.selectedViewController beginAppearanceTransition:YES animated:animated];
+    if (!self.canAppearanceTransition) {
+        self.canAppearanceTransition = YES;
     }
+    [self.selectedViewController beginAppearanceTransition:YES animated:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    if (self.isViewAppearingValue && self.isViewAppearingValue.boolValue) {
-        [self.selectedViewController endAppearanceTransition];
-    }
+    [self.selectedViewController endAppearanceTransition];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    self.isViewAppearingValue = @NO;
     [self.selectedViewController beginAppearanceTransition:NO animated:animated];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    if (self.isViewAppearingValue && !self.isViewAppearingValue.boolValue) {
-        [self.selectedViewController endAppearanceTransition];
-    }
+    [self.selectedViewController endAppearanceTransition];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -119,6 +114,18 @@
                    direction:(TPPageViewControllerNavigationDirection)direction
                     animated:(BOOL)animated
                   completion:(TPPageViewControllerTransitionCompletionHandler)completion {
+    if (!self.canAppearanceTransition) {
+        [self removeChildIfNeeded:self.selectedViewController];
+        [self addChildIfNeeded:viewController];
+        self.selectedViewController = viewController;
+        [self loadBeforeViewControllerForShowingViewController:viewController];
+        [self loadAfterViewControllerForShowingViewController:viewController];
+        if (completion) {
+            completion(YES);
+        }
+        return;
+    }
+    
     if (self.selectedViewController == viewController) {
         [self cancelScrollingIfNeeded];
         [self loadBeforeViewControllerForShowingViewController:viewController];
@@ -288,24 +295,30 @@
     self.afterViewController = [self.dataSource pageViewController:self viewControllerAfterViewController:showingViewController];
 }
 
-- (void)addChildIfNeeded:(UIViewController *)childViewController {
+- (BOOL)addChildIfNeeded:(UIViewController *)childViewController {
+    if (!childViewController) {
+        return NO;
+    }
     if ([self.childViewControllers containsObject:childViewController]) {
-        return;
+        return NO;
     }
     [self addChildViewController:childViewController];
     [self.scrollView addSubview:childViewController.view];
     [childViewController didMoveToParentViewController:self];
+    return YES;
 }
 
-- (void)removeChildIfNeeded:(UIViewController *)childViewController {
+- (BOOL)removeChildIfNeeded:(UIViewController *)childViewController {
+    if (!childViewController) {
+        return NO;
+    }
     if (![self.childViewControllers containsObject:childViewController]) {
-        return;
+        return NO;
     }
     [childViewController willMoveToParentViewController:nil];
     [childViewController.view removeFromSuperview];
     [childViewController removeFromParentViewController];
-    // if it's remove, we can safe called
-    [childViewController endAppearanceTransition];
+    return YES;
 }
 
 - (void)delegateDidFinishScrollingFromViewController:(UIViewController *)startingViewController
@@ -332,7 +345,9 @@
         self.beforeViewController = self.selectedViewController;
         self.selectedViewController = self.afterViewController;
         
-        [self removeChildIfNeeded:self.beforeViewController];
+        if ([self removeChildIfNeeded:self.beforeViewController]) {
+            [self.beforeViewController endAppearanceTransition];
+        }
         [self.selectedViewController endAppearanceTransition];
         
         [self delegateDidFinishScrollingFromViewController:self.beforeViewController
@@ -359,11 +374,12 @@
         self.afterViewController = self.selectedViewController;
         self.selectedViewController = self.beforeViewController;
         
-        [self removeChildIfNeeded:self.afterViewController];
+        if ([self removeChildIfNeeded:self.afterViewController]) {
+            [self.afterViewController endAppearanceTransition];
+        }
         [self.selectedViewController endAppearanceTransition];
         
         [self delegateDidFinishScrollingFromViewController:self.afterViewController destinationViewController:self.selectedViewController transitionCompleted:YES];
-        
         
         [self performCompletionHanderIfNeeded:YES];
         
@@ -387,8 +403,12 @@
         [self.selectedViewController beginAppearanceTransition:YES animated:self.transitionAnimated];
         
         // Remove hidden view controllers
-        [self removeChildIfNeeded:self.beforeViewController];
-        [self removeChildIfNeeded:self.afterViewController];
+        if ([self removeChildIfNeeded:self.beforeViewController]) {
+            [self.beforeViewController endAppearanceTransition];
+        }
+        if ([self removeChildIfNeeded:self.afterViewController]) {
+            [self.afterViewController endAppearanceTransition];
+        }
         
         [self.selectedViewController endAppearanceTransition];
         
