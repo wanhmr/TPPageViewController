@@ -7,6 +7,14 @@
 
 #import "TPPageViewController.h"
 
+typedef NS_ENUM(NSInteger, TPAppearanceTransitionState) {
+    TPAppearanceTransitionStateNone,
+    TPAppearanceTransitionStateWillAppear,
+    TPAppearanceTransitionStateDidAppear,
+    TPAppearanceTransitionStateWillDisappear,
+    TPAppearanceTransitionStateDidDisappear
+};
+
 @interface TPPageViewController () <UIScrollViewDelegate>
 
 @property (nonatomic, strong) UIScrollView *scrollView;
@@ -29,7 +37,9 @@
 
 @property (nonatomic, copy) TPPageViewControllerTransitionCompletionHandler didFinishScrollingCompletionHandler;
 
-@property (nonatomic, assign) BOOL canAppearanceTransition;
+@property (nonatomic, assign) BOOL transitioning;
+
+@property (nonatomic, strong) NSMapTable *childTransitionStateMapTable;
 
 @end
 
@@ -58,6 +68,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.childTransitionStateMapTable = [[NSMapTable alloc] initWithKeyOptions:NSPointerFunctionsWeakMemory
+                                                                  valueOptions:NSPointerFunctionsStrongMemory
+                                                                      capacity:1];
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.scrollView.delegate = self;
     [self.view addSubview:self.scrollView];
@@ -65,25 +78,22 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!self.canAppearanceTransition) {
-        self.canAppearanceTransition = YES;
-    }
-    [self.selectedViewController beginAppearanceTransition:YES animated:animated];
+    [self child:self.selectedViewController beginAppearanceTransitionIfPossible:YES animated:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self.selectedViewController endAppearanceTransition];
+    [self childEndAppearanceTransitionIfPossible:self.selectedViewController];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self.selectedViewController beginAppearanceTransition:NO animated:animated];
+    [self child:self.selectedViewController beginAppearanceTransitionIfPossible:NO animated:animated];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    [self.selectedViewController endAppearanceTransition];
+    [self childEndAppearanceTransitionIfPossible:self.selectedViewController];
 }
 
 - (void)viewWillLayoutSubviews {
@@ -114,18 +124,6 @@
                    direction:(TPPageViewControllerNavigationDirection)direction
                     animated:(BOOL)animated
                   completion:(TPPageViewControllerTransitionCompletionHandler)completion {
-    if (!self.canAppearanceTransition) {
-        [self removeChildIfNeeded:self.selectedViewController];
-        [self addChildIfNeeded:viewController];
-        self.selectedViewController = viewController;
-        [self loadBeforeViewControllerForShowingViewController:viewController];
-        [self loadAfterViewControllerForShowingViewController:viewController];
-        if (completion) {
-            completion(YES);
-        }
-        return;
-    }
-    
     if (self.selectedViewController == viewController) {
         [self cancelScrollingIfNeeded];
         [self loadBeforeViewControllerForShowingViewController:viewController];
@@ -346,9 +344,9 @@
         self.selectedViewController = self.afterViewController;
         
         if ([self removeChildIfNeeded:self.beforeViewController]) {
-            [self.beforeViewController endAppearanceTransition];
+            [self childEndAppearanceTransitionIfPossible:self.beforeViewController];
         }
-        [self.selectedViewController endAppearanceTransition];
+        [self childEndAppearanceTransitionIfPossible:self.selectedViewController];
         
         [self delegateDidFinishScrollingFromViewController:self.beforeViewController
                                  destinationViewController:self.selectedViewController
@@ -375,11 +373,13 @@
         self.selectedViewController = self.beforeViewController;
         
         if ([self removeChildIfNeeded:self.afterViewController]) {
-            [self.afterViewController endAppearanceTransition];
+            [self childEndAppearanceTransitionIfPossible:self.afterViewController];
         }
-        [self.selectedViewController endAppearanceTransition];
+        [self childEndAppearanceTransitionIfPossible:self.selectedViewController];
         
-        [self delegateDidFinishScrollingFromViewController:self.afterViewController destinationViewController:self.selectedViewController transitionCompleted:YES];
+        [self delegateDidFinishScrollingFromViewController:self.afterViewController
+                                 destinationViewController:self.selectedViewController
+                                       transitionCompleted:YES];
         
         [self performCompletionHanderIfNeeded:YES];
         
@@ -395,22 +395,22 @@
         // Scrolled but ended up where started
     } else if (showingViewController == self.selectedViewController) {
         if (self.navigationDirection == TPPageViewControllerNavigationDirectionForward) {
-            [self.afterViewController beginAppearanceTransition:NO animated:self.transitionAnimated];
+            [self child:self.afterViewController beginAppearanceTransitionIfPossible:NO animated:self.transitionAnimated];
         } else if (self.navigationDirection == TPPageViewControllerNavigationDirectionReverse) {
-            [self.beforeViewController beginAppearanceTransition:NO animated:self.transitionAnimated];
+            [self child:self.beforeViewController beginAppearanceTransitionIfPossible:NO animated:self.transitionAnimated];
         }
         
-        [self.selectedViewController beginAppearanceTransition:YES animated:self.transitionAnimated];
+        [self child:self.selectedViewController beginAppearanceTransitionIfPossible:YES animated:self.transitionAnimated];
         
         // Remove hidden view controllers
         if ([self removeChildIfNeeded:self.beforeViewController]) {
-            [self.beforeViewController endAppearanceTransition];
+            [self childEndAppearanceTransitionIfPossible:self.beforeViewController];
         }
         if ([self removeChildIfNeeded:self.afterViewController]) {
-            [self.afterViewController endAppearanceTransition];
+            [self childEndAppearanceTransitionIfPossible:self.afterViewController];
         }
         
-        [self.selectedViewController endAppearanceTransition];
+        [self childEndAppearanceTransitionIfPossible:self.selectedViewController];
         
         if (self.navigationDirection == TPPageViewControllerNavigationDirectionForward) {
             [self delegateDidFinishScrollingFromViewController:self.selectedViewController
@@ -446,8 +446,8 @@
         }
     }
 
-    [startingViewController beginAppearanceTransition:NO animated:self.transitionAnimated];
-    [destinationViewController beginAppearanceTransition:YES animated:self.transitionAnimated];
+    [self child:startingViewController beginAppearanceTransitionIfPossible:NO animated:self.transitionAnimated];
+    [self child:destinationViewController beginAppearanceTransitionIfPossible:YES animated:self.transitionAnimated];
     [self addChildIfNeeded:destinationViewController];
 }
 
@@ -455,6 +455,77 @@
     [self updateViewControllersWithShowingViewController:showingViewController];
     [self adjustScrollView];
     [self layoutPageViews];
+}
+
+#pragma mark - Appearance Transition
+
+- (BOOL)child:(UIViewController *)child canBeginAppearanceTransition:(BOOL)isAppearing {
+    if (!child) {
+        return NO;
+    }
+    NSNumber *stateNumber = [self.childTransitionStateMapTable objectForKey:child];
+    if (!stateNumber) {
+        return YES;
+    }
+    TPAppearanceTransitionState state = stateNumber.integerValue;
+    if (isAppearing) {
+        if (state == TPAppearanceTransitionStateWillDisappear ||
+            state == TPAppearanceTransitionStateDidDisappear) {
+            return YES;
+        }
+    } else {
+        if (state == TPAppearanceTransitionStateWillAppear ||
+            state == TPAppearanceTransitionStateDidAppear) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (void)child:(UIViewController *)child beginAppearanceTransition:(BOOL)isAppearing animated:(BOOL)animated {
+    TPAppearanceTransitionState toState = isAppearing ? TPAppearanceTransitionStateWillAppear : TPAppearanceTransitionStateWillDisappear;
+    [self.childTransitionStateMapTable setObject:@(toState) forKey:child];
+    [child beginAppearanceTransition:isAppearing animated:animated];
+}
+
+- (void)child:(UIViewController *)child beginAppearanceTransitionIfPossible:(BOOL)isAppearing animated:(BOOL)animated {
+    if ([self child:child canBeginAppearanceTransition:isAppearing]) {
+        [self child:child beginAppearanceTransition:isAppearing animated:animated];
+    }
+}
+
+- (BOOL)childCanEndAppearanceTransition:(UIViewController *)child {
+    if (!child) {
+        return NO;
+    }
+    NSNumber *stateNumber = [self.childTransitionStateMapTable objectForKey:child];
+    TPAppearanceTransitionState state = stateNumber.integerValue;
+    if (state == TPAppearanceTransitionStateWillAppear ||
+        state == TPAppearanceTransitionStateWillDisappear) {
+        return YES;
+    }
+    return NO;
+}
+
+- (void)childEndAppearanceTransition:(UIViewController *)child {
+    NSNumber *stateNumber = [self.childTransitionStateMapTable objectForKey:child];
+    TPAppearanceTransitionState state = stateNumber.integerValue;
+    TPAppearanceTransitionState toState = TPAppearanceTransitionStateNone;
+    if (state == TPAppearanceTransitionStateWillAppear) {
+        toState = TPAppearanceTransitionStateDidAppear;
+    } else if (state == TPAppearanceTransitionStateWillDisappear) {
+        toState = TPAppearanceTransitionStateDidDisappear;
+    } else {
+        NSAssert(NO, @"The state is error.");
+    }
+    [self.childTransitionStateMapTable setObject:@(toState) forKey:child];
+    [child endAppearanceTransition];
+}
+
+- (void)childEndAppearanceTransitionIfPossible:(UIViewController *)child {
+    if ([self childCanEndAppearanceTransition:child]) {
+        [self childEndAppearanceTransition:child];
+    }
 }
 
 #pragma mark - UIScrollViewDelegate

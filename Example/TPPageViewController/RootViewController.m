@@ -27,7 +27,7 @@
     
     // Or, for a vertical orientation
 //    TPPageViewController *pageViewController = [[TPPageViewController alloc] initWithNavigationOrientation:TPPageViewControllerNavigationOrientationVertical];
-//
+////
     pageViewController.dataSource = self;
     pageViewController.delegate = self;
 //
@@ -56,7 +56,25 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    NSLog(@"--------");
+    NSLog(@"viewWillAppear: Root");
+//    GreetingViewController *currentViewController = [self viewControllerAtIndex:1];
+//    UIPageViewController *pageViewController = self.pageViewController;
+//    [pageViewController setViewControllers:@[currentViewController] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    NSLog(@"viewDidAppear: Root");
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    NSLog(@"viewWillDisappear: Root");
+}
+
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    NSLog(@"viewDidDisappear: Root");
 }
 
 - (BOOL)prefersStatusBarHidden {
@@ -175,7 +193,7 @@
     startGreetingViewController.label.alpha = pow(1 - absoluteProgress, 2);
     destinationGreetingViewController.label.alpha = pow(absoluteProgress, 2);
     
-    NSLog(@"Is scrolling from %@ to %@ with progress %f.", startGreetingViewController.greeting, destinationGreetingViewController.greeting, progress);
+//    NSLog(@"Is scrolling from %@ to %@ with progress %f.", startGreetingViewController.greeting, destinationGreetingViewController.greeting, progress);
 }
 
 
