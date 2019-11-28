@@ -37,8 +37,6 @@ typedef NS_ENUM(NSInteger, TPAppearanceTransitionState) {
 
 @property (nonatomic, copy) TPPageViewControllerTransitionCompletionHandler didFinishScrollingCompletionHandler;
 
-@property (nonatomic, assign) BOOL transitioning;
-
 @property (nonatomic, strong) NSMapTable *childTransitionStateMapTable;
 
 @end
