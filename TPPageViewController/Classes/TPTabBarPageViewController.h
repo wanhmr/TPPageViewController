@@ -72,8 +72,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (CGFloat)heightForTabBarInPageViewController:(TPTabBarPageViewController *)pageViewController;
 
-- (void)pageViewController:(TPTabBarPageViewController *)pageViewController didMatchIdentifier:(NSString *)identifier beforeIndex:(NSUInteger)beforeIndex afterIndex:(NSUInteger)afterIndex;
-
 - (void)pageViewController:(TPTabBarPageViewController *)pageViewController willStartScrollingFromViewController:(__kindof UIViewController *)startingViewController destinationViewController:(__kindof UIViewController *)destinationViewController;
 
 - (void)pageViewController:(TPTabBarPageViewController *)pageViewController isScrollingFromViewController:(__kindof UIViewController *)startingViewController destinationViewController:(__kindof UIViewController *)destinationViewController progress:(CGFloat)progress;
