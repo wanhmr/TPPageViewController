@@ -126,6 +126,8 @@ typedef NS_ENUM(NSInteger, TPAppearanceTransitionState) {
         [self cancelScrollingIfNeeded];
         [self loadBeforeViewControllerForShowingViewController:viewController];
         [self loadAfterViewControllerForShowingViewController:viewController];
+        [self.view setNeedsLayout];
+        [self.view layoutIfNeeded];
         if (completion) {
             completion(YES);
         }
