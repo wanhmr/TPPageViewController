@@ -25,11 +25,10 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
 
 @property (nullable, nonatomic, strong) UIView *headerView;
 
-@property (nonatomic, readonly) WMMagicScrollView *scrollView;
-
 @end
 
 @implementation TPMagicTabBarPageViewController
+@dynamic view;
 @dynamic dataSource;
 @dynamic delegate;
 
@@ -48,9 +47,9 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    self.scrollView.contentSize = CGSizeMake(CGRectGetWidth(self.view.bounds),
-                                             CGRectGetHeight(self.view.bounds) +
-                                             self.headerViewMaximumHeight);
+    self.view.contentSize = CGSizeMake(CGRectGetWidth(self.view.bounds),
+                                       CGRectGetHeight(self.view.bounds) +
+                                       self.headerViewMaximumHeight);
 }
 
 - (void)viewDidLayoutSubviews {
@@ -61,8 +60,8 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
 - (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex {
     [super reloadDataWithSelectedIndex:selectedIndex];
     
-    self.scrollView.headerViewMinimumHeight = self.headerViewMinimumHeight;
-    self.scrollView.headerViewMaximumHeight = self.headerViewMaximumHeight;
+    self.view.headerViewMinimumHeight = self.headerViewMinimumHeight;
+    self.view.headerViewMaximumHeight = self.headerViewMaximumHeight;
     
     if (self.headerView.superview) {
         [self.headerView removeFromSuperview];
@@ -77,20 +76,20 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
 }
 
 - (void)scrollToHeaderViewPosition:(TPMagicTabBarPageViewControllerHeaderViewPosition)headerViewPosition animated:(BOOL)animated {
-    CGPoint contentOffset = self.scrollView.contentOffset;
+    CGPoint contentOffset = self.view.contentOffset;
     if (headerViewPosition == TPMagicTabBarPageViewControllerHeaderViewPositionVisiableMinimum) {
-        contentOffset.y = self.scrollView.maximumContentOffsetY;
+        contentOffset.y = self.view.maximumContentOffsetY;
     } else if (headerViewPosition == TPMagicTabBarPageViewControllerHeaderViewPositionVisiableMaximum) {
         contentOffset.y = 0;
     }
-    [self.scrollView setContentOffset:contentOffset animated:animated];
+    [self.view setContentOffset:contentOffset animated:animated];
 }
 
 #pragma mark - Utils
 
 - (void)updateHeaderViewVisiableProgressIfNeeded {
-    CGFloat contentOffsetY = self.scrollView.contentOffset.y;
-    CGFloat maximumContentOffsetY = self.scrollView.maximumContentOffsetY;
+    CGFloat contentOffsetY = self.view.contentOffset.y;
+    CGFloat maximumContentOffsetY = self.view.maximumContentOffsetY;
     if (maximumContentOffsetY < FLT_EPSILON) {
         return;
     }
@@ -110,10 +109,6 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
 }
 
 #pragma mark - Accessors
-
-- (WMMagicScrollView *)scrollView {
-    return (WMMagicScrollView *)self.view;
-}
 
 - (CGFloat)headerViewMinimumHeight {
     if ([self.delegate respondsToSelector:@selector(minimumHeightForHeaderViewInPageViewController:)]) {
@@ -145,13 +140,13 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
 
 - (CGRect)pageContentRect {
     CGRect pageContentRect = [super pageContentRect];
-    pageContentRect.size.height += self.scrollView.maximumContentOffsetY;
+    pageContentRect.size.height += self.view.maximumContentOffsetY;
     return pageContentRect;
 }
 
 @end
 
-@implementation TPMagicTabBarPageViewController (UIScrollViewDelegate)
+@implementation TPMagicTabBarPageViewController (WMMagicScrollViewDelegate)
 
 #pragma mark - WMMagicScrollViewDelegate
 

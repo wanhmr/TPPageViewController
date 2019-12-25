@@ -181,10 +181,12 @@ static void * const kMXScrollViewKVOContext = (void*)&kMXScrollViewKVOContext;
         
         if (ABS(diff) < FLT_EPSILON || !_isObserving) return;
         
+        BOOL isScrollUp = diff < 0;
+        
         CGFloat maximumContentOffsetY = self.maximumContentOffsetY;
         if (object == self) {
             //Adjust self scroll offset when scroll down
-            if (diff > 0 && _lock) {
+            if (!isScrollUp && _lock) {
                 [self scrollView:self setContentOffset:old];
             } else if (self.contentOffset.y < -self.contentInset.top && !self.bounces) {
                 [self scrollView:self setContentOffset:CGPointMake(self.contentOffset.x, -self.contentInset.top)];
@@ -196,13 +198,17 @@ static void * const kMXScrollViewKVOContext = (void*)&kMXScrollViewKVOContext;
             UIScrollView *scrollView = object;
             _lock = (scrollView.contentOffset.y > -scrollView.contentInset.top);
             
-            //Manage scroll up
-            if (self.contentOffset.y < maximumContentOffsetY && _lock && diff < 0) {
-                [self scrollView:scrollView setContentOffset:old];
-            }
-            //Disable bouncing when scroll down
-            if (!_lock && ((self.contentOffset.y > -self.contentInset.top) || self.bounces)) {
-                [self scrollView:scrollView setContentOffset:CGPointMake(scrollView.contentOffset.x, -scrollView.contentInset.top)];
+            if (isScrollUp) {
+                //Manage scroll up
+                if (self.contentOffset.y < maximumContentOffsetY && _lock) {
+                    [self scrollView:scrollView setContentOffset:old];
+                }
+            } else {
+                //Disable bouncing when scroll down
+                if (!_lock && ((self.contentOffset.y > -self.contentInset.top) || self.bounces)) {
+                    [self scrollView:scrollView setContentOffset:CGPointMake(scrollView.contentOffset.x,
+                                                                             -scrollView.contentInset.top)];
+                }
             }
         }
     } else {

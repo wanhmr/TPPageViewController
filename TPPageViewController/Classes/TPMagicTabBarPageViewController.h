@@ -6,6 +6,7 @@
 //
 
 #import "TPTabBarPageViewController.h"
+#import "WMMagicScrollView.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -44,6 +45,8 @@ typedef NS_ENUM(NSInteger, TPMagicTabBarPageViewControllerHeaderViewPosition) {
 
 @interface TPMagicTabBarPageViewController : TPTabBarPageViewController
 
+@property(null_resettable, nonatomic, strong) WMMagicScrollView *view;
+
 @property (nonatomic, weak) id<TPMagicTabBarPageViewControllerDataSource> dataSource;
 @property (nonatomic, weak) id<TPMagicTabBarPageViewControllerDelegate> delegate;
 
@@ -56,7 +59,7 @@ typedef NS_ENUM(NSInteger, TPMagicTabBarPageViewControllerHeaderViewPosition) {
 
 @end
 
-@interface TPMagicTabBarPageViewController (UIScrollViewDelegate) <UIScrollViewDelegate>
+@interface TPMagicTabBarPageViewController (WMMagicScrollViewDelegate) <WMMagicScrollViewDelegate>
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 
