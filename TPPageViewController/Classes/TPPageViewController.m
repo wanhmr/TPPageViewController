@@ -15,11 +15,61 @@ typedef NS_ENUM(NSInteger, TPAppearanceTransitionState) {
     TPAppearanceTransitionStateDidDisappear
 };
 
+@interface TPQueuedScrollView : UIScrollView
+
+@property (nonatomic, assign, readonly) TPPageViewControllerNavigationOrientation navigationOrientation;
+
+@end
+
+@implementation TPQueuedScrollView
+
+- (instancetype)initWithNavigationOrientation:(TPPageViewControllerNavigationOrientation)navigationOrientation {
+    self = [super init];
+    if (self) {
+        _navigationOrientation = navigationOrientation;
+    }
+    return self;
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    /**
+       当 TPMagicTabBarPageViewController 嵌套 TPMagicTabBarPageViewController 的时候，被嵌套的 TPMagicTabBarPageViewController 当展示第一个或者最后一个的时候，外层的 TPMagicTabBarPageViewController 滑动手势并不能被响应。
+       这是因为外层的手势被内层的 scrollview 阻止了。内层 scrollView pan 手势的 canPreventGestureRecognizer:（参数为外层层 scrollView pan 手势） 返回 YES。
+       原因暂时未知，当嵌套的是 TPTabBarPageViewController 就没有问题。
+    */
+    BOOL result = [super gestureRecognizerShouldBegin:gestureRecognizer];
+    if (result && !self.bounces && gestureRecognizer == self.panGestureRecognizer) {
+        UIPanGestureRecognizer *panGestureRecoginser = (UIPanGestureRecognizer *)gestureRecognizer;
+        CGFloat contentOffsetX = self.contentOffset.x;
+        CGPoint velocity = [panGestureRecoginser velocityInView:self];
+        CGFloat beforeInset = self.isOrientationHorizontal ? self.contentInset.left : self.contentInset.top;
+        CGFloat afterInset = self.isOrientationHorizontal ? self.contentInset.right : self.contentInset.bottom;
+        BOOL isScrollBefore = self.isOrientationHorizontal ? velocity.x > 0 : velocity.y > 0;
+        if (isScrollBefore) {
+            if (contentOffsetX + beforeInset < FLT_EPSILON) {
+                return NO;
+            }
+        } else {
+            if (contentOffsetX + afterInset < FLT_EPSILON) {
+                return NO;
+            }
+        }
+    }
+    return result;
+}
+
+#pragma mark - Setter & Getter
+
+- (BOOL)isOrientationHorizontal {
+    return self.navigationOrientation == TPPageViewControllerNavigationOrientationHorizontal;
+}
+
+@end
+
 @interface TPPageViewController () <UIScrollViewDelegate>
 
-@property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) TPQueuedScrollView *scrollView;
 @property (nonatomic, assign) TPPageViewControllerNavigationDirection navigationDirection;
-@property (nonatomic, assign) TPPageViewControllerNavigationOrientation navigationOrientation;
 @property (nonatomic, readonly) BOOL isOrientationHorizontal;
 
 @property (nonatomic, strong) UIViewController *beforeViewController;
@@ -637,9 +687,9 @@ typedef NS_ENUM(NSInteger, TPAppearanceTransitionState) {
 
 #pragma mark - Setter & Getter
 
-- (UIScrollView *)scrollView {
+- (TPQueuedScrollView *)scrollView {
     if (!_scrollView) {
-        _scrollView = [UIScrollView new];
+        _scrollView = [[TPQueuedScrollView alloc] initWithNavigationOrientation:self.navigationOrientation];
         _scrollView.pagingEnabled = YES;
         _scrollView.scrollsToTop = NO;
         _scrollView.autoresizingMask =
