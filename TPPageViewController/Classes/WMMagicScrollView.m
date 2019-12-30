@@ -33,13 +33,12 @@ static NSString * const MXContentOffsetKeyPath = @"contentOffset";
 @property (nonatomic, strong) MXScrollViewDelegateForwarder *forwarder;
 @property (nonatomic, strong) NSMutableArray<UIScrollView *> *observedViews;
 
-
-
 @end
 
 @implementation WMMagicScrollView {
     BOOL _isObserving;
     BOOL _lock;
+    __weak UIScrollView *_trackingSubview;
 }
 
 static void * const kMXScrollViewKVOContext = (void*)&kMXScrollViewKVOContext;
@@ -82,6 +81,7 @@ static void * const kMXScrollViewKVOContext = (void*)&kMXScrollViewKVOContext;
     [self addObserver:self forKeyPath:MXContentOffsetKeyPath
               options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
               context:kMXScrollViewKVOContext];
+    
     _isObserving = YES;
 }
 
@@ -153,7 +153,7 @@ static void * const kMXScrollViewKVOContext = (void*)&kMXScrollViewKVOContext;
 #pragma mark KVO
 
 - (void)addObserverToView:(UIScrollView *)scrollView {
-    _lock = (scrollView.contentOffset.y > -scrollView.contentInset.top);
+    [self trackSubview:scrollView];
     
     [scrollView addObserver:self
                  forKeyPath:MXContentOffsetKeyPath
@@ -174,7 +174,7 @@ static void * const kMXScrollViewKVOContext = (void*)&kMXScrollViewKVOContext;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     
     if (context == kMXScrollViewKVOContext && [keyPath isEqualToString:MXContentOffsetKeyPath]) {
-        
+
         CGPoint new = [[change objectForKey:NSKeyValueChangeNewKey] CGPointValue];
         CGPoint old = [[change objectForKey:NSKeyValueChangeOldKey] CGPointValue];
         CGFloat diff = old.y - new.y;
@@ -186,34 +186,46 @@ static void * const kMXScrollViewKVOContext = (void*)&kMXScrollViewKVOContext;
         CGFloat maximumContentOffsetY = self.maximumContentOffsetY;
         if (object == self) {
             //Adjust self scroll offset when scroll down
-            if (!isScrollUp && _lock) {
-                [self scrollView:self setContentOffset:old];
-            } else if (self.contentOffset.y < -self.contentInset.top && !self.bounces) {
+            if (self.contentOffset.y < -self.contentInset.top && !self.bounces) {
                 [self scrollView:self setContentOffset:CGPointMake(self.contentOffset.x, -self.contentInset.top)];
             } else if (self.contentOffset.y > maximumContentOffsetY) {
                 [self scrollView:self setContentOffset:CGPointMake(self.contentOffset.x, maximumContentOffsetY)];
+            } else {
+                if (isScrollUp) {
+                    if (!_lock && _trackingSubview.contentOffset.y < -_trackingSubview.contentInset.top) {
+                        [self scrollView:self setContentOffset:old];
+                    }
+                } else {
+                    if (_lock) {
+                        [self scrollView:self setContentOffset:old];
+                    }
+                }
             }
         } else {
-            //Adjust the observed scrollview's content offset
             UIScrollView *scrollView = object;
-            _lock = (scrollView.contentOffset.y > -scrollView.contentInset.top);
+            //Adjust the observed scrollview's content offset
+            [self trackSubview:scrollView];
             
             if (isScrollUp) {
                 //Manage scroll up
-                if (self.contentOffset.y < maximumContentOffsetY && _lock) {
+                if (_lock && self.contentOffset.y < maximumContentOffsetY) {
                     [self scrollView:scrollView setContentOffset:old];
                 }
             } else {
                 //Disable bouncing when scroll down
                 if (!_lock && ((self.contentOffset.y > -self.contentInset.top) || self.bounces)) {
-                    [self scrollView:scrollView setContentOffset:CGPointMake(scrollView.contentOffset.x,
-                                                                             -scrollView.contentInset.top)];
+                    [self scrollView:scrollView setContentOffset:CGPointMake(scrollView.contentOffset.x, -scrollView.contentInset.top)];
                 }
             }
         }
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
+}
+
+- (void)trackSubview:(UIScrollView *)subview {
+    _trackingSubview = subview;
+    _lock = (subview.contentOffset.y > -subview.contentInset.top);
 }
 
 #pragma mark Scrolling views handlers
