@@ -61,6 +61,8 @@ typedef NS_ENUM(NSInteger, TPMagicTabBarPageViewControllerHeaderViewPosition) {
 
 @interface TPMagicTabBarPageViewController (WMMagicScrollViewDelegate) <WMMagicScrollViewDelegate>
 
+- (BOOL)scrollView:(WMMagicScrollView *)scrollView shouldScrollWithSubview:(UIScrollView *)subview;
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView;
 
 @end
