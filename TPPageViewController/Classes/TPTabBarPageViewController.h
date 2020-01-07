@@ -18,6 +18,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nullable, nonatomic, readonly) NSNumber *tp_pageIndex;
 
+@property (nullable, nonatomic, readonly) TPTabBarPageViewController *tp_tabBarPageViewController;
+
+
 @end
 
 @interface TPTabBarPageViewController : UIViewController

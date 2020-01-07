@@ -24,6 +24,15 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
 - (void)tp_setPageIndex:(NSNumber *)pageIndex {
     objc_setAssociatedObject(self, @selector(tp_pageIndex), pageIndex, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
+
+- (TPTabBarPageViewController *)tp_tabBarPageViewController {
+    for (UIViewController *vc = self; vc; vc = vc.parentViewController) {
+        if ([vc isKindOfClass:[TPTabBarPageViewController class]]) {
+            return (TPTabBarPageViewController *)vc;
+        }
+    }
+    return nil;
+}
  
 @end
 

@@ -58,8 +58,6 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
 }
 
 - (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex {
-    [super reloadDataWithSelectedIndex:selectedIndex];
-    
     self.view.headerViewMinimumHeight = self.headerViewMinimumHeight;
     self.view.headerViewMaximumHeight = self.headerViewMaximumHeight;
     
@@ -71,6 +69,8 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
         self.headerView = [self.dataSource headerViewInPageViewController:self];
         [self.view addSubview:self.headerView];
     }
+    
+    [super reloadDataWithSelectedIndex:selectedIndex];
     
     [self updateHeaderViewVisiableProgressIfNeeded];
 }
