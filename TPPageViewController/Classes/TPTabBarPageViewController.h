@@ -47,6 +47,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)selectPageAtIndex:(NSUInteger)index animated:(BOOL)animated;
 
+- (void)reloadTabBar;
+
 - (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex;
 
 - (void)reloadData;

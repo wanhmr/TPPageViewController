@@ -54,6 +54,8 @@ typedef NS_ENUM(NSInteger, TPMagicTabBarPageViewControllerHeaderViewPosition) {
 
 @property (nonatomic, assign, readonly) CGFloat headerViewVisiableProgress;
 
+- (void)reloadHeaderView;
+
 - (void)scrollToHeaderViewPosition:(TPMagicTabBarPageViewControllerHeaderViewPosition)headerViewPosition
                           animated:(BOOL)animated;
 

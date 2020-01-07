@@ -50,14 +50,10 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
     self.view.contentSize = CGSizeMake(CGRectGetWidth(self.view.bounds),
                                        CGRectGetHeight(self.view.bounds) +
                                        self.headerViewMaximumHeight);
-}
-
-- (void)viewDidLayoutSubviews {
-    [super viewDidLayoutSubviews];
     self.headerView.frame = self.headerViewRect;
 }
 
-- (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex {
+- (void)reloadHeaderView {
     self.view.headerViewMinimumHeight = self.headerViewMinimumHeight;
     self.view.headerViewMaximumHeight = self.headerViewMaximumHeight;
     
@@ -69,6 +65,10 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
         self.headerView = [self.dataSource headerViewInPageViewController:self];
         [self.view addSubview:self.headerView];
     }
+}
+
+- (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex {
+    [self reloadHeaderView];
     
     [super reloadDataWithSelectedIndex:selectedIndex];
     

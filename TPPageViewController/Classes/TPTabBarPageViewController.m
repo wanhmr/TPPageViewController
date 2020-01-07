@@ -85,7 +85,7 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
     [self reloadDataWithSelectedIndex:self.defaultSelectedIndex];
 }
 
-- (void)viewDidLayoutSubviews {
+- (void)viewWillLayoutSubviews {
     [super viewDidLayoutSubviews];
     self.tabBar.frame = self.tabBarRect;
     self.pageViewController.view.frame = self.pageContentRect;
@@ -110,6 +110,17 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
                                         direction:direction
                                          animated:animated
                                        completion:nil];
+}
+
+- (void)reloadTabBar {
+    if (self.tabBar.superview) {
+        [self.tabBar removeFromSuperview];
+    }
+    self.tabBar = nil;
+    if ([self.dataSource respondsToSelector:@selector(tabBarInPageViewController:)]) {
+        self.tabBar = [self.dataSource tabBarInPageViewController:self];
+        [self.view addSubview:self.tabBar];
+    }
 }
 
 - (void)reloadDataWithSelectedIndex:(NSUInteger)selectedIndex {
@@ -137,14 +148,7 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
         }
     }
     
-    if (self.tabBar.superview) {
-        [self.tabBar removeFromSuperview];
-    }
-    self.tabBar = nil;
-    if ([self.dataSource respondsToSelector:@selector(tabBarInPageViewController:)]) {
-        self.tabBar = [self.dataSource tabBarInPageViewController:self];
-        [self.view addSubview:self.tabBar];
-    }
+    [self reloadTabBar];
     
     if (self.numberOfViewControllers > 0) {
         [self selectPageAtIndex:selectedIndex animated:NO];
