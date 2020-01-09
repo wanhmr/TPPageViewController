@@ -175,17 +175,14 @@ static void * const kMXScrollViewKVOContext = (void*)&kMXScrollViewKVOContext;
         
         CGFloat maximumContentOffsetY = self.maximumContentOffsetY;
         if (object == self) {
-            if (self.contentOffset.y < -self.contentInset.top && !self.bounces) {
+            if (!isScrollUp && [self shouldLock]) {
+                //Adjust self scroll offset when scroll down
+                [self scrollView:self setContentOffset:old];
+            } else if (self.contentOffset.y < -self.contentInset.top && !self.bounces) {
                 [self scrollView:self setContentOffset:CGPointMake(self.contentOffset.x, -self.contentInset.top)];
             } else if (self.contentOffset.y > maximumContentOffsetY) {
                 [self scrollView:self setContentOffset:CGPointMake(self.contentOffset.x, maximumContentOffsetY)];
             } else {
-                if (!isScrollUp) {
-                    //Adjust self scroll offset when scroll down
-                    if ([self shouldLock]) {
-                        [self scrollView:self setContentOffset:old];
-                    }
-                }
             }
         } else {
             UIScrollView *scrollView = object;
