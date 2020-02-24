@@ -111,15 +111,15 @@ static UIViewController * TPViewControllerFromView(UIView *view) {
 #pragma mark - Accessors
 
 - (CGFloat)headerViewMinimumHeight {
-    if ([self.delegate respondsToSelector:@selector(minimumHeightForHeaderViewInPageViewController:)]) {
-        return [self.delegate minimumHeightForHeaderViewInPageViewController:self];
+    if ([self.dataSource respondsToSelector:@selector(minimumHeightForHeaderViewInPageViewController:)]) {
+        return [self.dataSource minimumHeightForHeaderViewInPageViewController:self];
     }
     return 0;
 }
 
 - (CGFloat)headerViewMaximumHeight {
-    if ([self.delegate respondsToSelector:@selector(maximumHeightForHeaderViewInPageViewController:)]) {
-        return [self.delegate maximumHeightForHeaderViewInPageViewController:self];
+    if ([self.dataSource respondsToSelector:@selector(maximumHeightForHeaderViewInPageViewController:)]) {
+        return [self.dataSource maximumHeightForHeaderViewInPageViewController:self];
     }
     return 0;
 }

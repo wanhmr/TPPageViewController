@@ -23,15 +23,15 @@ typedef NS_ENUM(NSInteger, TPMagicTabBarPageViewControllerHeaderViewPosition) {
 
 - (nullable __kindof UIView *)headerViewInPageViewController:(TPMagicTabBarPageViewController *)pageViewController;
 
+- (CGFloat)minimumHeightForHeaderViewInPageViewController:(TPMagicTabBarPageViewController *)pageViewController;
+
+- (CGFloat)maximumHeightForHeaderViewInPageViewController:(TPMagicTabBarPageViewController *)pageViewController;
+
 @end
 
 @protocol TPMagicTabBarPageViewControllerDelegate <TPTabBarPageViewControllerDelegate>
 
 @optional
-
-- (CGFloat)minimumHeightForHeaderViewInPageViewController:(TPMagicTabBarPageViewController *)pageViewController;
-
-- (CGFloat)maximumHeightForHeaderViewInPageViewController:(TPMagicTabBarPageViewController *)pageViewController;
 
 - (void)pageViewController:(TPMagicTabBarPageViewController *)pageViewController didChangeHeaderViewVisiableProgress:(CGFloat)visiableProgress;
 

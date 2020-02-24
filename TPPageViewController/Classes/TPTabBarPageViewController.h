@@ -16,10 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UIViewController (TPTabBarPageViewController)
 
-@property (nullable, nonatomic, readonly) NSNumber *tp_pageIndex;
-
 @property (nullable, nonatomic, readonly) TPTabBarPageViewController *tp_tabBarPageViewController;
-
 
 @end
 
@@ -30,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) NSUInteger defaultSelectedIndex;
 
-@property (nullable, nonatomic, readonly) NSNumber *selectedPageIndex;
+@property (nonatomic, readonly) NSUInteger selectedIndex;
 @property (nullable, nonatomic, readonly) __kindof UIViewController *selectedViewController;
 
 @property (nonatomic, assign, readonly) NSUInteger numberOfViewControllers;
@@ -44,6 +41,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) CGRect pageContentRect;
 
 - (UIViewController *)viewControllerAtIndex:(NSUInteger)index;
+
+- (NSUInteger)indexOfViewController:(nullable UIViewController *)viewController;
 
 - (void)selectPageAtIndex:(NSUInteger)index animated:(BOOL)animated;
 
@@ -69,19 +68,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable __kindof UIView *)tabBarInPageViewController:(TPTabBarPageViewController *)pageViewController;
 
+- (CGFloat)heightForTabBarInPageViewController:(TPTabBarPageViewController *)pageViewController;
+
 @end
 
 @protocol TPTabBarPageViewControllerDelegate <NSObject>
 
 @optional
 
-- (CGFloat)heightForTabBarInPageViewController:(TPTabBarPageViewController *)pageViewController;
+- (void)pageViewController:(TPTabBarPageViewController *)pageViewController willStartScrollingFromIndex:(NSUInteger)fromIndex toIndex:(NSUInteger)toIndex;
 
-- (void)pageViewController:(TPTabBarPageViewController *)pageViewController willStartScrollingFromViewController:(__kindof UIViewController *)startingViewController destinationViewController:(__kindof UIViewController *)destinationViewController;
+- (void)pageViewController:(TPTabBarPageViewController *)pageViewController isScrollingFromIndex:(NSUInteger)fromIndex toIndex:(NSUInteger)toIndex progress:(CGFloat)progress;
 
-- (void)pageViewController:(TPTabBarPageViewController *)pageViewController isScrollingFromViewController:(__kindof UIViewController *)startingViewController destinationViewController:(__kindof UIViewController *)destinationViewController progress:(CGFloat)progress;
-
-- (void)pageViewController:(TPTabBarPageViewController *)pageViewController didFinishScrollingFromViewController:( __kindof UIViewController *)startingViewController destinationViewController:(__kindof UIViewController *)destinationViewController transitionCompleted:(BOOL)completed;
+- (void)pageViewController:(TPTabBarPageViewController *)pageViewController didFinishScrollingFromIndex:(NSUInteger)fromIndex toIndex:(NSUInteger)toIndex transitionCompleted:(BOOL)completed;
 
 @end
 
