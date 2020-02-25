@@ -85,7 +85,7 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
     NSUInteger currentSelectedIndex = self.selectedIndex;
 
     TPPageViewControllerNavigationDirection direction = TPPageViewControllerNavigationDirectionForward;
-    if (index < currentSelectedIndex) {
+    if (currentSelectedIndex < self.numberOfViewControllers && index < currentSelectedIndex) {
         direction = TPPageViewControllerNavigationDirectionReverse;
     }
     
@@ -136,7 +136,14 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
     [self reloadTabBar];
     
     if (self.numberOfViewControllers > 0) {
-        [self selectPageAtIndex:selectedIndex animated:NO];
+        NSUInteger fixedSelectedIndex = selectedIndex;
+        if (fixedSelectedIndex >= self.numberOfViewControllers) {
+            fixedSelectedIndex = self.defaultSelectedIndex;
+        }
+        if (fixedSelectedIndex >= self.numberOfViewControllers) {
+            fixedSelectedIndex = 0;
+        }
+        [self selectPageAtIndex:fixedSelectedIndex animated:NO];
     }
 }
 
