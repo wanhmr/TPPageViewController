@@ -23,7 +23,7 @@ typedef NS_ENUM(NSInteger, TPPageViewControllerNavigationOrientation) {
     TPPageViewControllerNavigationOrientationVertical
 };
 
-typedef void(^TPPageViewControllerTransitionCompletionHandler)(BOOL transitionCompleted);
+typedef void(^TPPageViewControllerTransitionCompletionBlock)(BOOL transitionCompleted);
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -41,11 +41,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)selectViewController:(UIViewController *)viewController
                    direction:(TPPageViewControllerNavigationDirection)direction
                     animated:(BOOL)animated
-                  completion:(nullable TPPageViewControllerTransitionCompletionHandler)completion;
+                  completion:(nullable TPPageViewControllerTransitionCompletionBlock)completion;
 
-- (void)scrollForwardWithAnimated:(BOOL)animated completion:(nullable TPPageViewControllerTransitionCompletionHandler)completion;
+- (void)scrollForwardWithAnimated:(BOOL)animated completion:(nullable TPPageViewControllerTransitionCompletionBlock)completion;
 
-- (void)scrollReverseWithAnimated:(BOOL)animated completion:(nullable TPPageViewControllerTransitionCompletionHandler)completion;
+- (void)scrollReverseWithAnimated:(BOOL)animated completion:(nullable TPPageViewControllerTransitionCompletionBlock)completion;
 
 @end
 

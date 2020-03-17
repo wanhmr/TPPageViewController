@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol TPTabBarPageViewControllerDataSource;
 @protocol TPTabBarPageViewControllerDelegate;
 
+typedef void(^TPTabBarPageViewControllerTransitionCompletionBlock)(BOOL transitionCompleted);
+
 @interface UIViewController (TPTabBarPageViewController)
 
 @property (nullable, nonatomic, readonly) TPTabBarPageViewController *tp_tabBarPageViewController;
@@ -43,6 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (UIViewController *)viewControllerAtIndex:(NSUInteger)index;
 
 - (NSUInteger)indexOfViewController:(nullable UIViewController *)viewController;
+
+- (void)selectPageAtIndex:(NSUInteger)index animated:(BOOL)animated completion:(nullable TPTabBarPageViewControllerTransitionCompletionBlock)completion;
 
 - (void)selectPageAtIndex:(NSUInteger)index animated:(BOOL)animated;
 

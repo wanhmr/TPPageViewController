@@ -85,7 +85,7 @@ typedef NS_ENUM(NSInteger, TPAppearanceTransitionState) {
 // Used for accurate view appearance messages
 @property (nonatomic, assign) BOOL transitionAnimated;
 
-@property (nonatomic, copy) TPPageViewControllerTransitionCompletionHandler didFinishScrollingCompletionHandler;
+@property (nonatomic, copy) TPPageViewControllerTransitionCompletionBlock didFinishScrollingCompletionBlock;
 
 @property (nonatomic, strong) NSMapTable *childTransitionStateMapTable;
 
@@ -171,7 +171,7 @@ typedef NS_ENUM(NSInteger, TPAppearanceTransitionState) {
 - (void)selectViewController:(UIViewController *)viewController
                    direction:(TPPageViewControllerNavigationDirection)direction
                     animated:(BOOL)animated
-                  completion:(TPPageViewControllerTransitionCompletionHandler)completion {
+                  completion:(TPPageViewControllerTransitionCompletionBlock)completion {
     if (self.selectedViewController == viewController) {
         [self cancelScrollingIfNeeded];
         [self loadBeforeViewControllerForShowingViewController:viewController];
@@ -197,7 +197,7 @@ typedef NS_ENUM(NSInteger, TPAppearanceTransitionState) {
     }
 }
 
-- (void)scrollForwardWithAnimated:(BOOL)animated completion:(TPPageViewControllerTransitionCompletionHandler)completion {
+- (void)scrollForwardWithAnimated:(BOOL)animated completion:(TPPageViewControllerTransitionCompletionBlock)completion {
     if (self.afterViewController == nil) {
         if (completion) {
             completion(NO);
@@ -216,7 +216,7 @@ typedef NS_ENUM(NSInteger, TPAppearanceTransitionState) {
         return;
     }
     
-    self.didFinishScrollingCompletionHandler = completion;
+    self.didFinishScrollingCompletionBlock = completion;
     self.transitionAnimated = animated;
     
     if (self.isOrientationHorizontal) {
@@ -226,7 +226,7 @@ typedef NS_ENUM(NSInteger, TPAppearanceTransitionState) {
     }
 }
 
-- (void)scrollReverseWithAnimated:(BOOL)animated completion:(TPPageViewControllerTransitionCompletionHandler)completion {
+- (void)scrollReverseWithAnimated:(BOOL)animated completion:(TPPageViewControllerTransitionCompletionBlock)completion {
     if (self.beforeViewController == nil) {
         if (completion) {
             completion(NO);
@@ -245,7 +245,7 @@ typedef NS_ENUM(NSInteger, TPAppearanceTransitionState) {
         return;
     }
     
-    self.didFinishScrollingCompletionHandler = completion;
+    self.didFinishScrollingCompletionBlock = completion;
     self.transitionAnimated = animated;
     
     [self.scrollView setContentOffset:CGPointZero animated:animated];
@@ -264,9 +264,9 @@ typedef NS_ENUM(NSInteger, TPAppearanceTransitionState) {
 }
 
 - (void)performCompletionHanderIfNeeded:(BOOL)completed {
-    if (self.didFinishScrollingCompletionHandler) {
-        self.didFinishScrollingCompletionHandler(completed);
-        self.didFinishScrollingCompletionHandler = nil;
+    if (self.didFinishScrollingCompletionBlock) {
+        self.didFinishScrollingCompletionBlock(completed);
+        self.didFinishScrollingCompletionBlock = nil;
     }
 }
 

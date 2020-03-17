@@ -76,7 +76,7 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
 
 #pragma mark - Public
 
-- (void)selectPageAtIndex:(NSUInteger)index animated:(BOOL)animated {
+- (void)selectPageAtIndex:(NSUInteger)index animated:(BOOL)animated completion:(nullable TPTabBarPageViewControllerTransitionCompletionBlock)completion {
     if (index >= self.numberOfViewControllers) {
         NSAssert(NO, @"The selectedIndex is invalid.");
         return;
@@ -92,7 +92,11 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
     [self.pageViewController selectViewController:[self viewControllerAtIndex:index]
                                         direction:direction
                                          animated:animated
-                                       completion:nil];
+                                       completion:completion];
+}
+
+- (void)selectPageAtIndex:(NSUInteger)index animated:(BOOL)animated {
+    [self selectPageAtIndex:index animated:animated completion:nil];
 }
 
 - (void)reloadTabBar {
