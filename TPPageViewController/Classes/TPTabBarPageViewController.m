@@ -129,7 +129,7 @@ static NSString *TPKeyFromIndex(NSUInteger index) {
         }
     }
     if (self.viewControllerIdentifiers.count != self.numberOfViewControllers) {
-        // Remove all cache if identifiers is invalid.
+        // Remove all cache if identifiers are invalid.
         [self.viewControllersCache removeAllObjects];
         
         for (NSUInteger i = 0; i < self.numberOfViewControllers; i++) {
